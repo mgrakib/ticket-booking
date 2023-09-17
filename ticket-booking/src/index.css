@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.cusTomeRequired::after{
+    content: "*";
+    color: red;
+}
+
+.MuiInputBase-root::after{
+    border-bottom: 2px solid #219051 !important;
+}
+
+.css-1c2i806-MuiFormLabel-root-MuiInputLabel-root.Mui-focused{
+    color: #219051 !important;
+}

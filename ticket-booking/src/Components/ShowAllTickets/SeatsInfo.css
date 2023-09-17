@@ -1,0 +1,15 @@
+.seat{
+    background-image: url('../../assets/blank_chair.png');
+    background-size: cover;   
+    
+}
+.selectSeat{
+    background-image: url('../../assets/select_chair.png');
+    background-size: cover;   
+
+}
+.bookedSeat{
+    background-image: url('../../assets/booked_chair.png');
+    background-size: cover;   
+
+}

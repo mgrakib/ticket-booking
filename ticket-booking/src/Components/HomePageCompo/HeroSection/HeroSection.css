@@ -1,0 +1,24 @@
+.trangle-shape{
+    clip-path: polygon(50% 0%, 88% 100%, 50% 89%, 12% 100%);
+    
+}
+
+.cityBannar{
+    background-image: url('../../../../public/city_bannar.png');
+    background-repeat: repeat-x;
+    background-position: bottom;
+
+}
+
+.running-car-div{
+    animation: animatename 10s linear infinite;
+}
+
+@keyframes animatename{
+  0%{
+    transform: translateX(3px);
+  }
+  100%{
+    transform: translateX(160vw);
+  }
+}
