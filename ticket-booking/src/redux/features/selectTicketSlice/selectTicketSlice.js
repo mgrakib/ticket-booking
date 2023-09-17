@@ -14,6 +14,7 @@ const selectTicketSlice = createSlice({
 		toggleSeatSelect: (state, { payload }) => {
 			const alreadySelect = state.selectTickets.includes(payload);
 			if (!alreadySelect) {
+				// check one user select max 4 
 				if (state.selectTickets.length < 4) {
 					state.selectTickets.push(payload);
 				}
