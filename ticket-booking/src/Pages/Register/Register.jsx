@@ -1,12 +1,16 @@
 /** @format */
 
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import logo from "../../../public/logo.png";
 import { Button, TextField } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { createUser } from "../../redux/features/userSlice/userSlice";
 const Register = () => {
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
     
     const [isDisable, setIsDisable] = useState(false);
 
@@ -22,7 +26,46 @@ const Register = () => {
 		formState: { errors },
 		handleSubmit,
 	} = useForm();
-	const onSubmit = data => console.log(data);
+	const onSubmit = data => {
+		const {
+			businessReg,
+			busOperatorName,
+
+			email,
+			firstName,
+			password,
+			phoneNumber,
+			secondName,
+		} = data;
+		const name = `${firstName} ${secondName}`; 
+		const role = params;
+		dispatch(
+			createUser({
+				email,
+				password,
+				name,
+				businessReg,
+				busOperatorName,
+				phoneNumber,
+				role,
+			})
+		)
+			.then(response => {
+				if (response && !response.error) {
+					// Signup was successful, navigate to the home page
+					navigate("/dashboard");
+				} else {
+					// Handle error, if any
+				}
+			})
+			.catch(error => {
+				// Handle error
+			});
+
+		
+		
+	};
+
 
 	if (params === "user") {
 		return <div>alsfj</div>;
@@ -128,21 +171,21 @@ const Register = () => {
 										{/* Bus Number   */}
 										<div className='col-span-1 w-full '>
 											<TextField
-												{...register("busNumber", {
+												{...register("businessReg", {
 													required: true,
 												})}
 												id='standard-basic'
-												label='Bus Number *'
+												label='Business Registation No *'
 												variant='standard'
 												className='w-full'
 											/>
-											{errors.busNumber?.type ===
+											{errors.businessReg?.type ===
 												"required" && (
 												<p
 													role='alert'
 													className='text-[11px] text-red-500'
 												>
-													Bus Number is required
+													Business Registation is required
 												</p>
 											)}
 										</div>

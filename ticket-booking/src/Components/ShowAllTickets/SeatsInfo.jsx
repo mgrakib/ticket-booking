@@ -11,6 +11,8 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSeatSelect } from "../../redux/features/selectTicketSlice/selectTicketSlice";
 
+import warning from "../../assets/warning.png";
+
 const SeatsInfo = ({
 	busNumber,
 	rent,
@@ -46,7 +48,7 @@ const SeatsInfo = ({
 		return result;
 	};
 
-	console.log(selectTickets.length, " kljasf", isFullMessageShow);
+	
 
 	return (
 		<div className=''>
@@ -90,29 +92,27 @@ const SeatsInfo = ({
 													)}1]`}
 												>
 													<div
-														onClick={() =>
-															{isBookedSeat(
+														onClick={() => {
+															isBookedSeat(
 																`${String.fromCharCode(
 																	65 + index
 																)}1`
 															) ||
-															dispatch(
-																toggleSeatSelect(
-																	`${String.fromCharCode(
-																		65 +
-																			index
-																	)}1`
-																)
-															)
+																dispatch(
+																	toggleSeatSelect(
+																		`${String.fromCharCode(
+																			65 +
+																				index
+																		)}1`
+																	)
+																);
 
 															selectTickets.length ===
-															4
-																&& setIsFullMessageShow(
-																		true
-																)
-																
-															}
-														}
+																4 &&
+																setIsFullMessageShow(
+																	true
+																);
+														}}
 														onMouseEnter={() =>
 															handleMouseEnter(
 																`[${String.fromCharCode(
@@ -159,27 +159,27 @@ const SeatsInfo = ({
 													)}2]`}
 												>
 													<div
-														onClick={() =>
-															{isBookedSeat(
+														onClick={() => {
+															isBookedSeat(
 																`${String.fromCharCode(
 																	65 + index
 																)}2`
 															) ||
-															dispatch(
-																toggleSeatSelect(
-																	`${String.fromCharCode(
-																		65 +
-																			index
-																	)}2`
-																)
-															)
-														
-														selectTickets.length ===
-															4 &&
-															setIsFullMessageShow(
-																true
-															);}
-														}
+																dispatch(
+																	toggleSeatSelect(
+																		`${String.fromCharCode(
+																			65 +
+																				index
+																		)}2`
+																	)
+																);
+
+															selectTickets.length ===
+																4 &&
+																setIsFullMessageShow(
+																	true
+																);
+														}}
 														onMouseEnter={() =>
 															handleMouseEnter(
 																`[${String.fromCharCode(
@@ -218,7 +218,7 @@ const SeatsInfo = ({
 												</Tooltip>
 											</div>
 											<div className='flex gap-2'>
-											{/* 3 */}
+												{/* 3 */}
 												<Tooltip
 													followCursor
 													TransitionComponent={Zoom}
@@ -227,27 +227,27 @@ const SeatsInfo = ({
 													)}3]`}
 												>
 													<div
-														onClick={() =>
-															{isBookedSeat(
+														onClick={() => {
+															isBookedSeat(
 																`${String.fromCharCode(
 																	65 + index
 																)}3`
 															) ||
-															dispatch(
-																toggleSeatSelect(
-																	`${String.fromCharCode(
-																		65 +
-																			index
-																	)}3`
-																)
-															)
-														
-														selectTickets.length ===
-															4 &&
-															setIsFullMessageShow(
-																true
-															);}
-														}
+																dispatch(
+																	toggleSeatSelect(
+																		`${String.fromCharCode(
+																			65 +
+																				index
+																		)}3`
+																	)
+																);
+
+															selectTickets.length ===
+																4 &&
+																setIsFullMessageShow(
+																	true
+																);
+														}}
 														onMouseEnter={() =>
 															handleMouseEnter(
 																`[${String.fromCharCode(
@@ -294,26 +294,26 @@ const SeatsInfo = ({
 													)}4]`}
 												>
 													<div
-														onClick={() =>
-															{isBookedSeat(
+														onClick={() => {
+															isBookedSeat(
 																`${String.fromCharCode(
 																	65 + index
 																)}4`
 															) ||
-															dispatch(
-																toggleSeatSelect(
-																	`${String.fromCharCode(
-																		65 +
-																			index
-																	)}4`
-																)
-															)
-														selectTickets.length ===
-															4 &&
-															setIsFullMessageShow(
-																true
-															);}
-														}
+																dispatch(
+																	toggleSeatSelect(
+																		`${String.fromCharCode(
+																			65 +
+																				index
+																		)}4`
+																	)
+																);
+															selectTickets.length ===
+																4 &&
+																setIsFullMessageShow(
+																	true
+																);
+														}}
 														onMouseEnter={() =>
 															handleMouseEnter(
 																`[${String.fromCharCode(
@@ -358,7 +358,13 @@ const SeatsInfo = ({
 						</div>
 
 						{isFullMessageShow && (
-							<div className='border border-[#D10808] rounded-md py-2 px-3 mt-4 text-[#D10808]'>
+							<div className='border border-[#D10808] rounded-md py-2 px-3 mt-4 text-[#D10808] flex items-center gap-2'>
+								<div className="w-[30px] h-[30px]">
+									<img
+										src={warning}
+										alt=''
+									/>
+								</div>
 								<p className='text-[14px]'>
 									Maximum of 4 seat(s) can be booked
 									at-a-time.

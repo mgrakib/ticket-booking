@@ -10,6 +10,7 @@ import AddBusSedule from "../Dashboard/Admin/AddBusSedule/AddBusSedule";
 import AddBusOnRoad from "../Dashboard/BusOwnerComponent/AddBusOnRoad/AddBusOnRoad";
 import Register from "../Pages/Register/Register";
 import SignIn from "../Pages/SignIn/SignIn";
+import PrivateRoute from "../Loyout/PrivateRoute/PrivateRoute";
 const router = createBrowserRouter([
 	{
 		path: "/",
@@ -23,20 +24,24 @@ const router = createBrowserRouter([
 				path: "/bus/search",
 				element: <SearchTickets />,
 			},
+			{
+				path: "/signup/:params",
+				element: <Register />,
+			},
+			{
+				path: "/singin/:params",
+				element: <SignIn />,
+			},
 		],
 	},
-	{
-		path: "/signup/:params",
-		element: <Register />,
-	},
-	{
-		path: "/singin/:params",
-		element: <SignIn />,
-	},
-	
+
 	{
 		path: "/dashboard",
-		element: <DashboardHome />,
+		element: (
+			<PrivateRoute>
+				<DashboardHome />
+			</PrivateRoute>
+		),
 		children: [
 			{
 				path: "/dashboard",

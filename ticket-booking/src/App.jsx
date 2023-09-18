@@ -1,33 +1,57 @@
+/** @format */
 
-
-import { Outlet } from 'react-router-dom';
-import './App.css'
+import { Outlet, useLocation, useParams } from "react-router-dom";
+import "./App.css";
 import NavBar from "./Components/Shared/NavBar/NavBar";
-import TopNavBar from './Components/Shared/NavBar/TopNavBar';
-import ContactUs from './Components/HomePageCompo/ContactUs/ContactUs';
-import Footer from './Components/Shared/Footer/Footer';
+import TopNavBar from "./Components/Shared/NavBar/TopNavBar";
+import ContactUs from "./Components/HomePageCompo/ContactUs/ContactUs";
+import Footer from "./Components/Shared/Footer/Footer";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import auth from "./Firebase/firebase.config";
+import { useDispatch } from "react-redux";
+import { toggleIsLoading } from "./redux/features/userSlice/userSlice";
 
 function App() {
-  
-  return (
-		<div className='overflow-x-hidden'>
-			<div className=' '>
-				<div className='hidden md:block border-b border-gray-200'>
-					<TopNavBar />
-				</div>
+	const { pathname } = useLocation();
+	const [userEmail, setUserEmail] = useState("");
+	const dispatch = useDispatch();
+	useEffect(() => {
+		onAuthStateChanged(auth, user => {
+			if (user) {
+				setUserEmail(user.email);
+			} else {
+				dispatch(toggleIsLoading(false));
+			}
+		});
+	}, [dispatch]);
 
-				<NavBar />
-			</div>
+	const routeName = pathname.split("/").slice(1, -1).join("/");
+
+	console.log(routeName)
+	return (
+		<div className='overflow-x-hidden'>
+			{routeName !== "signup" && routeName !== "singin" && (
+				<div className=' '>
+					<div className='hidden md:block border-b border-gray-200'>
+						<TopNavBar />
+					</div>
+
+					<NavBar />
+				</div>
+			)}
 			<div>
 				<Outlet />
 			</div>
 
-			<div>
-				<ContactUs />
-				<Footer />
-			</div>
+			{routeName !== "signup" && routeName !== "singin" && (
+				<div>
+					<ContactUs />
+					<Footer />
+				</div>
+			)}
 		</div>
-  );
+	);
 }
 
-export default App
+export default App;

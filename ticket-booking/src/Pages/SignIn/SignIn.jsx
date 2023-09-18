@@ -1,27 +1,44 @@
 /** @format */
 
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import logo from "../../../public/logo.png";
 import { Button, TextField } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { singIn } from "../../redux/features/userSlice/userSlice";
 const SignIn = () => {
-	const [isDisable, setIsDisable] = useState(false);
-
-	// Function to handle checkbox changes
-	const handleCheckboxChange = event => {
-		setIsDisable(event.target.checked);
-	};
+	const navigate = useNavigate();
+	const dispatch = useDispatch()
 
 	const { params } = useParams();
+	const {isLoading} = useSelector(state => state.userSlice)
 
+	console.log(isLoading, ' is slo');
+	
 	const {
 		register,
 		formState: { errors },
 		handleSubmit,
 	} = useForm();
-	const onSubmit = data => console.log(data);
+	const onSubmit = data => {
+		const {email, password } = data;
+		dispatch(singIn({
+			email,
+			password
+		})).then((response) => {
+			if (response && !response.error) {
+				// Signup was successful, navigate to the home page
+				navigate("/dashboard");
+			} else {
+				// Handle error, if any
+			}
+		}).catch((err) => {
+			
+		});
+
+	};
 
 	if (params === "user") {
 		return <div>alsfj</div>;
@@ -61,41 +78,41 @@ const SignIn = () => {
 										{/* first name  */}
 										<div className='col-span-2 w-full '>
 											<TextField
-												{...register("firstName", {
+												{...register("email", {
 													required: true,
 												})}
-												label='First Name *'
+												label='Email *'
 												variant='standard'
 												className='w-full'
 											/>
-											{errors.firstName?.type ===
+											{errors.email?.type ===
 												"required" && (
 												<p
 													role='alert'
 													className='text-[11px] text-red-500'
 												>
-													First name is required
+													Email is required
 												</p>
 											)}
 										</div>
 										{/* second name  */}
 										<div className='col-span-2 w-full '>
 											<TextField
-												{...register("secondName", {
+												{...register("password", {
 													required: true,
 												})}
 												id='standard-basic'
-												label='Second Name *'
+												label='Password *'
 												variant='standard'
 												className='w-full'
 											/>
-											{errors.secondName?.type ===
+											{errors.password?.type ===
 												"required" && (
 												<p
 													role='alert'
 													className='text-[11px] text-red-500'
 												>
-													Second Name is required
+													Password is required
 												</p>
 											)}
 										</div>
@@ -109,7 +126,6 @@ const SignIn = () => {
 											>
 												Forgot Password?
 											</label>{" "}
-											
 										</p>
 									</div>
 

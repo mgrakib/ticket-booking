@@ -41,7 +41,12 @@ export const baseAPI = createApi({
 				body: newBusInfo,
 			}),
 		}),
+		getUser: builder.query({
+			query: email => ({
+				url: `/get-user?email=${email}`,
+			}),
+		}),
 	}),
 });
 
-export const { useGetBusListQuery, useGetBusOperatorsQuery, useGetBusNumbersQuery, useUpdateBusOnSeduleMutation, useAddNewBusMutation } = baseAPI;
+export const { useGetBusListQuery, useGetBusOperatorsQuery, useGetBusNumbersQuery, useUpdateBusOnSeduleMutation, useAddNewBusMutation, useGetUserQuery } = baseAPI;
