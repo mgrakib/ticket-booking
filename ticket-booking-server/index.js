@@ -39,6 +39,9 @@ async function run() {
 		const allBusInfoCollections = client
 			.db("e-Ticket_booking")
 			.collection("allBusInfo");
+		const userCollection = client
+			.db("e-Ticket_booking")
+			.collection("userCollection");
 
 		app.get("/on_going_bus", async (req, res) => {
 			const fromCity = req.query.fromCity;
@@ -105,6 +108,57 @@ async function run() {
 
 			res.send({})
 		})
+
+
+		app.post('/create-user', async (req, res) => {
+			const {
+				email,
+				name,
+				businessReg,
+				busOperatorName,
+				phoneNumber,
+				role,
+			} = req.body;
+
+			const isExist = await userCollection.findOne({
+				$or: [
+					{ email }, // Check if email matches
+					{ businessReg }, // Check if businessReg matches
+					{ busOperatorName }, // Check if busOperatorName matches
+				],
+			});
+
+			console.log(isExist);
+			if (isExist) {
+				return res.send({
+					message:'user already exist'
+				})
+			} else {
+				
+				const insertNewUser = await userCollection.insertOne({
+					email,
+					name,
+					businessReg,
+					busOperatorName,
+					phoneNumber,
+					role,
+				});
+				res.send(insertNewUser);
+				}
+
+			
+		})
+
+		app.get('/get-user', async (req, res) => {
+			const email = req.query.email;
+			const getUser = await userCollection.findOne({ email });
+			console.log(getUser)
+
+			res.send(getUser)
+		})
+
+
+
 
 		// Send a ping to confirm a successful connection
 		await client.db("admin").command({ ping: 1 });
