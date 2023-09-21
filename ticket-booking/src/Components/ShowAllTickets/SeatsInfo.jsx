@@ -36,14 +36,14 @@ const SeatsInfo = ({
 		setSeatNumber(null);
 	};
 
-	const { busNumber: selectBusNumber, selectTickets } = useSelector(
+	const { busNumber: selectBusNumber, selectedSeats } = useSelector(
 		state => state.selectTicketSlice
 	);
 
 	const dispatch = useDispatch();
 
 	const isSeatSelected = seatName => {
-		return selectTickets.some(ticket => ticket === seatName);
+		return selectedSeats.some(ticket => ticket === seatName);
 	};
 	const isBookedSeat = seatName => {
 		const result = bookedSitsNumber.some(ticket => ticket === seatName);
@@ -54,8 +54,8 @@ const SeatsInfo = ({
 
 	const [isSeatBlank, setIsSeatBlank] = useState(false)
 	const handelNavigate = () => {
-		if (!selectTickets.length) {
-			setIsSeatBlank(true)
+		if (!selectedSeats.length) {
+			setIsSeatBlank(true);
 		} else {
 			navigate("/booking-bus-trip-info");
 		}
@@ -120,7 +120,7 @@ const SeatsInfo = ({
 																	)
 																);
 
-															selectTickets.length ===
+															selectedSeats.length ===
 																4 &&
 																setIsFullMessageShow(
 																	true
@@ -187,7 +187,7 @@ const SeatsInfo = ({
 																	)
 																);
 
-															selectTickets.length ===
+															selectedSeats.length ===
 																4 &&
 																setIsFullMessageShow(
 																	true
@@ -255,7 +255,7 @@ const SeatsInfo = ({
 																	)
 																);
 
-															selectTickets.length ===
+															selectedSeats.length ===
 																4 &&
 																setIsFullMessageShow(
 																	true
@@ -321,7 +321,7 @@ const SeatsInfo = ({
 																		)}4`
 																	)
 																);
-															selectTickets.length ===
+															selectedSeats.length ===
 																4 &&
 																setIsFullMessageShow(
 																	true
@@ -429,7 +429,7 @@ const SeatsInfo = ({
 
 							<div className='mt-3 text-[13px] min-h-[180px]'>
 								{selectBusNumber === busNumber &&
-									selectTickets.map(ticket => (
+									selectedSeats?.map(ticket => (
 										<div
 											key={ticket}
 											className='px-2 py-[10px] grid grid-cols-3 '
@@ -451,18 +451,20 @@ const SeatsInfo = ({
 								<div className='p-1 border border-gray-200 bg-[#F7F7F7]'>
 									<p className='font-bold text-[18px] text-[#219051]'>
 										Total:{" "}
-										{selectTickets.length === 0
+										{selectedSeats.length === 0
 											? 0
-											: selectTickets.length * rent}
+											: selectedSeats.length * rent}
 									</p>
 								</div>
 
-								{isSeatBlank && <div>
-									<p className="text-[12px] py-1 px-2 bg-red-100 mt-1">
-										Please choose your seat before you
-										continue.
-									</p>
-								</div>}
+								{isSeatBlank && (
+									<div>
+										<p className='text-[12px] py-1 px-2 bg-red-100 mt-1'>
+											Please choose your seat before you
+											continue.
+										</p>
+									</div>
+								)}
 							</div>
 						</div>
 

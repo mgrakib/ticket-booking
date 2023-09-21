@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
 	busNumber: "",
-	selectTickets: [],
+	selectedSeats: [],
 };
 
 const selectTicketSlice = createSlice({
@@ -12,21 +12,21 @@ const selectTicketSlice = createSlice({
 	initialState,
 	reducers: {
 		toggleSeatSelect: (state, { payload }) => {
-			const alreadySelect = state.selectTickets.includes(payload);
+			const alreadySelect = state.selectedSeats.includes(payload);
 			if (!alreadySelect) {
 				// check one user select max 4 
-				if (state.selectTickets.length < 4) {
-					state.selectTickets.push(payload);
+				if (state.selectedSeats.length < 4) {
+					state.selectedSeats.push(payload);
 				}
 			} else {
-				state.selectTickets.splice(state.selectTickets.indexOf(payload),1)
+				state.selectedSeats.splice(state.selectedSeats.indexOf(payload),1)
 			}
 		},
 		toggleBusNumber: (state, { payload }) => {
 			state.busNumber !== payload
 				? (state.busNumber = payload)
 				: (state.busNumber = "");
-			state.selectTickets=[]
+			state.selectedSeats=[]
 		},
 	},
 });

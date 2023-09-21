@@ -21,18 +21,16 @@ const ShowAllTickets = ({ targetedTickets }) => {
 	};
 
 	const dispatch = useDispatch();
-	const { busNumber: selectBusNumber, selectTickets } = useSelector(
+	const { busNumber: selectBusNumber, selectedSeats } = useSelector(
 		state => state.selectTicketSlice
 	);
-
-	console.log(targetedTickets, ' array');
 
 	
 
 	const [isFullMessageShow, setIsFullMessageShow] = useState(false);
 	useEffect(() => {
-		selectTickets.length === 3 && setIsFullMessageShow(false)
-	}, [selectTickets]);
+		selectedSeats.length === 3 && setIsFullMessageShow(false);
+	}, [selectedSeats]);
 
 	return (
 		<div className=''>
@@ -49,7 +47,7 @@ const ShowAllTickets = ({ targetedTickets }) => {
 					<div>
 						{targetedTickets?.length > 0 ? (
 							targetedTickets?.map(ticket => {
-								console.log(ticket);
+								
 								const {
 									busOperatorName,
 									araiveTime,

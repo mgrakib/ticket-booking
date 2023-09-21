@@ -13,10 +13,10 @@ const SearchTickets = () => {
 	const toCity = queryParams.get("toCity");
 	const doj = queryParams.get("doj");
 
-	console.log(fromCity, toCity, doj)
+	
 	const { data: targetedTickets, isLoading, isError } = useGetBusListQuery({ fromCity, toCity, doj });
 	
-	console.log(targetedTickets)
+	
 
     
 	return (
