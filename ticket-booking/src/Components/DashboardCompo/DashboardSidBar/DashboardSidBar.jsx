@@ -16,7 +16,11 @@ const DashboardSidBar = () => {
 			title: "Add Bus Sedule",
 			path: "/dashboard/add-bus-sedule",
 		},
-    ];
+		{
+			title: "Pending Bus",
+			path: "/dashboard/pending-bus",
+		},
+	];
     
     const busOperatorNavItems = [
 		{
@@ -26,6 +30,10 @@ const DashboardSidBar = () => {
 		{
 			title: "Add Bus On Road",
 			path: "/dashboard/add-bus-on-road",
+		},
+		{
+			title: "All Bus List",
+			path: "/dashboard/all-bus-list",
 		},
     ];
     
@@ -50,6 +58,9 @@ const DashboardSidBar = () => {
 		<div className='py-2 pl-2 pr-5  flex flex-col justify-between h-full'>
 			<div>
 				<div className='w-[20px] h-[20px] bg-gray-500'></div>
+				<div className='text-gray-200 '>
+					{role === "busOperator" && "Bus Operator Dashboard"}
+				</div>
 			</div>
 			{/* nav item  */}
 			<ul>

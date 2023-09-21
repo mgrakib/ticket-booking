@@ -7,7 +7,7 @@ export const baseAPI = createApi({
 	baseQuery: fetchBaseQuery({
 		baseUrl: "http://localhost:5000",
 	}),
-	tagTypes: ["ongoingBus"],
+	tagTypes: ["ongoingBus", "pendingBus"],
 
 	endpoints: builder => ({
 		getBusList: builder.query({
@@ -21,8 +21,8 @@ export const baseAPI = createApi({
 			}),
 		}),
 		getBusNumbers: builder.query({
-			query: busOperator => ({
-				url: `/get-bus-number?operatorName=${busOperator}`,
+			query: ({ busOperatorName, journeyDate }) => ({
+				url: `/get-bus-number?operatorName=${busOperatorName}&journeyDate=${journeyDate}`,
 			}),
 		}),
 
@@ -40,13 +40,32 @@ export const baseAPI = createApi({
 				method: "POST",
 				body: newBusInfo,
 			}),
+			invalidatesTags: ["pendingBus"],
 		}),
 		getUser: builder.query({
 			query: email => ({
 				url: `/get-user?email=${email}`,
 			}),
 		}),
+		getBusOwnerBusList: builder.query({
+			query: ({ businessReg, busOperatorName, isApproved }) => ({
+				url: `/get-all-bus-operator?busOperatorName=${busOperatorName}&businessReg=${businessReg}&isApproved=${isApproved}`,
+			}),
+		}),
+		getAllBusByStatus: builder.query({
+			query: isApproved => ({
+				url: `get-bus-by-status?isApproved=${isApproved}`,
+			}),
+			providesTags: ["pendingBus"],
+		}),
+		acceptBusRequest: builder.mutation({
+			query: id => ({
+				url: `/accept-bus-request?id=${id}`,
+				method: "PATCH",
+			}),
+			invalidatesTags: ["pendingBus"],
+		}),
 	}),
 });
 
-export const { useGetBusListQuery, useGetBusOperatorsQuery, useGetBusNumbersQuery, useUpdateBusOnSeduleMutation, useAddNewBusMutation, useGetUserQuery } = baseAPI;
+export const { useGetBusListQuery, useGetBusOperatorsQuery, useGetBusNumbersQuery, useUpdateBusOnSeduleMutation, useAddNewBusMutation, useGetUserQuery, useGetBusOwnerBusListQuery, useAcceptBusRequestMutation, useGetAllBusByStatusQuery } = baseAPI;

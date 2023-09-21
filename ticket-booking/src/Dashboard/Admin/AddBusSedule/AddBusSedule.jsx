@@ -1,37 +1,60 @@
 /** @format */
 
 import moment from "moment/moment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
 	useGetBusNumbersQuery,
 	useGetBusOperatorsQuery,
 	useUpdateBusOnSeduleMutation,
 } from "../../../redux/features/api/baseAPI";
+import { ImSpinner8 } from "react-icons/im";
+import Processing from "../../../Components/Processing/Processing";
+import toast, { Toaster } from "react-hot-toast";
+
 
 const AddBusSedule = () => {
-	// const [nowTime, setNowTime] = useState(new Date())
-	// setInterval(() => {
-	//     setNowTime(new Date())
-	// }, 1000);
+	const [journeyDate, setJourneyDate] = useState(null);
+	const [busOperatorName, setBusOperatorName] = useState(null);
 
-	const [busOperatorState, setBUsOperatorState] = useState("1");
 	const { data: busOperator } = useGetBusOperatorsQuery();
-	const { data: busNumbersArray } = useGetBusNumbersQuery(busOperatorState);
-	const [setUpdateBus, {data:returnData}] = useUpdateBusOnSeduleMutation();
+	const { data: busNumbersArray } = useGetBusNumbersQuery({
+		busOperatorName,
+		journeyDate,
+	});
+	const [setUpdateBus, { data: returnData, isLoading }] =
+		useUpdateBusOnSeduleMutation();
 
-	
+	const handelValue = event => {
+		console.log(event);
+	};
+
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
+		watch,
+		reset,
 	} = useForm();
 	const onSubmit = data => {
-		console.log(data)
-		setUpdateBus(data);
+		console.log(data);
+		setUpdateBus(data)
+			.then(res => {
+				if (res) {
+					toast.success("Successfully Addes");
+					reset();
+				}
+			})
+			.catch(err => toast.error(err.message));
 	};
 
-	console.log(returnData)
+	const journeyDateWatch = watch("journeyDate");
+	const busOperatorNameWatch = watch("busOperatorName");
+
+	useEffect(() => {
+		setJourneyDate(journeyDateWatch);
+		setBusOperatorName(busOperatorNameWatch);
+	}, [journeyDateWatch, busOperatorNameWatch]);
 
 	return (
 		<div className=''>
@@ -44,6 +67,37 @@ const AddBusSedule = () => {
 
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<div className='flex flex-col gap-3'>
+						{/* journyDate */}
+						<div className='mt-2 text-[14px] grid grid-cols-3 gap-10 '>
+							{/*Date*/}
+							<div className='col-span-1 flex flex-col items-start'>
+								<label
+									htmlFor=''
+									className='text-[12px]'
+								>
+									Jurny Date
+								</label>
+
+								<div className='border py-1 rounded w-full'>
+									<input
+										onChange={handelValue}
+										{...register("journeyDate", {
+											required: true,
+										})}
+										type='date'
+										className='py-[2px]  outline-none px-3 w-full'
+									/>
+								</div>
+								{errors.journeyDate?.type === "required" && (
+									<p
+										role='alert'
+										className='text-[12px] text-red-500'
+									>
+										Journey Date is required
+									</p>
+								)}
+							</div>
+						</div>
 						{/* bus operator name and bus number */}
 						<div className='mt-2 text-[14px] grid grid-cols-3 gap-10 '>
 							{/* bus operator  */}
@@ -57,11 +111,6 @@ const AddBusSedule = () => {
 
 								<div className='border py-1 rounded w-full'>
 									<select
-										onClick={event => {
-											setBUsOperatorState(
-												event.target.value
-											);
-										}}
 										{...register("busOperatorName", {
 											required: true,
 										})}
@@ -78,7 +127,9 @@ const AddBusSedule = () => {
 										{busOperator?.map((operator, index) => (
 											<option
 												key={index}
-												value={operator?.busOperatorName}
+												value={
+													operator?.busOperatorName
+												}
 											>
 												{operator?.busOperatorName}
 											</option>
@@ -120,16 +171,17 @@ const AddBusSedule = () => {
 										>
 											Select Bus Operator
 										</option>
-										{busNumbersArray?.[0]?.busNumbers?.map(
-											number => (
+										{busNumbersArray?.map(busInfo => {
+											const { busNumber } = busInfo;
+											return (
 												<option
-													key={number}
-													value={number}
+													key={busNumber}
+													value={busNumber}
 												>
-													{number}
+													{busNumber}
 												</option>
-											)
-										)}
+											);
+										})}
 									</select>
 								</div>
 
@@ -237,34 +289,6 @@ const AddBusSedule = () => {
 									</p>
 								)}
 							</div>
-
-							{/*Date*/}
-							<div className='col-span-1 flex flex-col items-start'>
-								<label
-									htmlFor=''
-									className='text-[12px]'
-								>
-									Jurny Date
-								</label>
-
-								<div className='border py-1 rounded w-full'>
-									<input
-										{...register("journeyDate", {
-											required: true,
-										})}
-										type='date'
-										className='py-[2px]  outline-none px-3 w-full'
-									/>
-								</div>
-								{errors.journeyDate?.type === "required" && (
-									<p
-										role='alert'
-										className='text-[12px] text-red-500'
-									>
-										Journey Date is required
-									</p>
-								)}
-							</div>
 						</div>
 
 						{/* startingTime and araiveTime */}
@@ -369,6 +393,9 @@ const AddBusSedule = () => {
 					</div>
 				</form>
 			</div>
+
+			{isLoading && <Processing />}
+			<Toaster position='top-right' />
 		</div>
 	);
 };

@@ -8,7 +8,12 @@ import "./HeroSection.css";
 import Container from "../../Container/Container";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
+import { useState } from "react";
 const HeroSection = () => {
+	const [fromCity, setFromCity] = useState(null)
+	const [toCity, setToCity] = useState(null)
+	const [doj, setDoj] = useState(null)
+
 	return (
 		<div className='cityBannar pt-2 md:pt-8 pb-20 md:pb-16 relative'>
 			<Container>
@@ -41,6 +46,11 @@ const HeroSection = () => {
 											<div className='trangle-shape bg-[#0E9E4D] w-[15px] h-[15px] absolute left-1'></div>
 
 											<select
+												onChange={event =>
+													setFromCity(
+														event.target.value
+													)
+												}
 												name=''
 												id=''
 												className='w-full border border-[#0E9E4D] outline-none px-4 py-2 rounded'
@@ -54,8 +64,8 @@ const HeroSection = () => {
 												<option value='Dhaka'>
 													Dhaka
 												</option>
-												<option value='Kustiya'>
-													Kustiya
+												<option value='Kushtia'>
+													Kushtia
 												</option>
 												<option value='Barishal'>
 													Barishal
@@ -74,6 +84,11 @@ const HeroSection = () => {
 											<div className='trangle-shape bg-[#0E9E4D] w-[15px] h-[15px] absolute left-1'></div>
 
 											<select
+												onChange={event =>
+													setToCity(
+														event.target.value
+													)
+												}
 												name=''
 												id=''
 												className='w-full border border-[#0E9E4D] outline-none px-4 py-2 rounded'
@@ -87,8 +102,8 @@ const HeroSection = () => {
 												<option value='Dhaka'>
 													Dhaka
 												</option>
-												<option value='Kustiya'>
-													Kustiya
+												<option value='Kushtia'>
+													Kushtia
 												</option>
 												<option value='Barishal'>
 													Barishal
@@ -111,6 +126,9 @@ const HeroSection = () => {
 												<BsFillCalendarCheckFill />
 											</div>
 											<input
+												onChange={event =>
+													setDoj(event.target.value)
+												}
 												type='date'
 												name=''
 												id='dateTime'
@@ -121,15 +139,29 @@ const HeroSection = () => {
 								</div>
 
 								<div className='flex items-center justify-center'>
-									<Link to='/bus/search?fromCity=Dhaka&toCity=Kushtia&doj=2023-09-05'>
+									{fromCity && toCity && doj ? (
+										<Link to={`/bus/search?fromCity=${fromCity}&toCity=${toCity}&doj=${doj}`}>
+											<Button
+												variant='contained'
+												style={{
+													background: "#219051",
+												}}
+												className='py-1 md:py-2 px-4 md:px-6  text-white font-semibold'
+											>
+												Find Ticket
+											</Button>
+										</Link>
+									) : (
 										<Button
 											variant='contained'
-											style={{ background: "#219051" }}
+											style={{
+												background: "#219051",
+											}}
 											className='py-1 md:py-2 px-4 md:px-6  text-white font-semibold'
 										>
 											Find Ticket
 										</Button>
-									</Link>
+									)}
 								</div>
 							</div>
 						</div>

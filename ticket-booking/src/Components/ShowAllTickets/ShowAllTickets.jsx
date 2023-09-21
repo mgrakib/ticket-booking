@@ -43,6 +43,7 @@ const ShowAllTickets = ({ targetedTickets }) => {
 
 					<div>
 						{targetedTickets?.map(ticket => {
+							console.log(ticket)
 							const {
 								busOperatorName,
 								araiveTime,
@@ -132,7 +133,9 @@ const ShowAllTickets = ({ targetedTickets }) => {
 
 												<Button
 													onClick={() => {
-														setIsFullMessageShow(false)
+														setIsFullMessageShow(
+															false
+														);
 														handelViewSeat(_id);
 														dispatch(
 															toggleBusNumber(
@@ -164,8 +167,14 @@ const ShowAllTickets = ({ targetedTickets }) => {
 												bookedSitsNumber={
 													bookedSitsNumber
 												}
-											isFullMessageShow={isFullMessageShow}
-											setIsFullMessageShow={setIsFullMessageShow}
+												isFullMessageShow={
+													isFullMessageShow
+												}
+												setIsFullMessageShow={
+													setIsFullMessageShow
+												}
+												handelViewSeat={handelViewSeat}
+												_id={_id}
 											/>
 										</div>
 									</div>

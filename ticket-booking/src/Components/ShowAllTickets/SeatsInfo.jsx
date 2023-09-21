@@ -4,12 +4,12 @@ import blank_char from "../../assets/blank_chair.png";
 import booked_chair from "../../assets/booked_chair.png";
 import select_chair from "../../assets/select_chair.png";
 import wheel from "../../assets/wheel.png";
-import { Tooltip } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 import Zoom from "@mui/material/Zoom";
 import "./SeatsInfo.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleSeatSelect } from "../../redux/features/selectTicketSlice/selectTicketSlice";
+import { toggleBusNumber, toggleSeatSelect } from "../../redux/features/selectTicketSlice/selectTicketSlice";
 
 import warning from "../../assets/warning.png";
 
@@ -20,8 +20,9 @@ const SeatsInfo = ({
 	bookedSitsNumber,
 	isFullMessageShow,
 	setIsFullMessageShow,
+	handelViewSeat,
+	_id,
 }) => {
-	
 	const seatsRow = [...Array(parseInt(totalSits / 4)).keys()];
 
 	const [seatNumber, setSeatNumber] = useState(null);
@@ -47,8 +48,6 @@ const SeatsInfo = ({
 
 		return result;
 	};
-
-	
 
 	return (
 		<div className=''>
@@ -359,7 +358,7 @@ const SeatsInfo = ({
 
 						{isFullMessageShow && (
 							<div className='border border-[#D10808] rounded-md py-2 px-3 mt-4 text-[#D10808] flex items-center gap-2'>
-								<div className="w-[30px] h-[30px]">
+								<div className='w-[30px] h-[30px]'>
 									<img
 										src={warning}
 										alt=''
@@ -443,6 +442,25 @@ const SeatsInfo = ({
 											: selectTickets.length * rent}
 									</p>
 								</div>
+							</div>
+						</div>
+
+						<div className='mt-5 flex items-center justify-between'>
+							<Button className='bg-[#219051] text-white'>
+								Continue
+							</Button>
+
+							<div>
+								<p
+									onClick={() => {
+										setIsFullMessageShow(false);
+										handelViewSeat(_id);
+										dispatch(toggleBusNumber(busNumber));
+									}}
+									className='text-xl font-semibold text-[#219051] border-b-2 border-[#219051] cursor-pointer hover:border-transparent hover:text-[#92e8b7]'
+								>
+									Close
+								</p>
 							</div>
 						</div>
 					</div>

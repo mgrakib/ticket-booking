@@ -13,9 +13,12 @@ const SearchTickets = () => {
 	const toCity = queryParams.get("toCity");
 	const doj = queryParams.get("doj");
 
-	const { data:targetedTickets, isLoading, isError } = useGetBusListQuery({ fromCity, toCity, doj });
+	console.log(fromCity, toCity, doj)
+	const { data: targetedTickets, isLoading, isError } = useGetBusListQuery({ fromCity, toCity, doj });
+	
+	console.log(targetedTickets)
 
-    console.log(targetedTickets, isLoading, isError);
+    
 	return (
 		<div>
 			<div className=' bg-[#ECECEC] py-5'>

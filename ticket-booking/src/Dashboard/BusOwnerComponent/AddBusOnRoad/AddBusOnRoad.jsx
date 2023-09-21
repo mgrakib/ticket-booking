@@ -1,16 +1,22 @@
 /** @format */
 
-import { Checkbox, FormControlLabel } from "@mui/material";
+import { Button, Checkbox, FormControlLabel } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAddNewBusMutation } from "../../../redux/features/api/baseAPI";
+import { useSelector } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
+import OnPageLink from "../../../Components/OnPageLink/OnPageLink";
+import { useLocation } from "react-router-dom";
+import Processing from "../../../Components/Processing/Processing";
 
 const AddBusOnRoad = () => {
+	   const { pathname } = useLocation();
 		const [isAC, setisAC] = useState(false);
 		const [isNAC, setisNAC] = useState(true);
 
 		const handleCheckboxChange = checkboxNumber => {
-			console.log(checkboxNumber);
+			
 			if (checkboxNumber === 1) {
 				setisAC(true);
 				setisNAC(false);
@@ -20,19 +26,49 @@ const AddBusOnRoad = () => {
 			}
 		};
 
-	const [updateNewBus, {data:newBusAddRes}] = useAddNewBusMutation();
+	const [updateNewBus, {data:newBusAddRes, isLoading}] = useAddNewBusMutation();
 	
-	console.log(newBusAddRes);
+	const { busOperatorName, businessReg, email } = useSelector(
+		state => state.userSlice
+	);
+
+	
 
 	const {
 		register,
 		formState: { errors },
 		handleSubmit,
 		watch,
+		reset
 	} = useForm();
 	const onSubmit = data => {
-		const busInfo = { ...data, isAC };
-		updateNewBus(busInfo)
+		const busInfo = { ...data, isAC, busOperatorName, businessReg };
+		updateNewBus(busInfo).then(res => {
+
+			console.log(res)
+			if (res && res.data.acknowledged) {
+				reset();
+				toast.success("Successfully Add Bus", {
+					
+					style: {
+						borderRadius: "10px",
+						background: "#333",
+						color: "#fff",
+					},
+				});
+			} else {
+				toast.error("Already Added the Bus", {
+					
+					style: {
+						borderRadius: "10px",
+						background: "#333",
+						color: "#fff",
+					},
+				});
+			}
+		}).catch(err => {
+			console.log(err)
+		})
 		
 	};
 
@@ -41,6 +77,7 @@ const AddBusOnRoad = () => {
 	const label = { inputProps: { "aria-label": "Checkbox demo" } };
 	return (
 		<div>
+			<OnPageLink pathname={pathname} />
 			<div className='mt-5'>
 				<p className='text-xl text-[#B8ACA4] font-bold'>Add New Bus</p>
 
@@ -64,7 +101,7 @@ const AddBusOnRoad = () => {
 										name='startingPoint'
 										id='startingPoint'
 										className='py-1 outline-none px-3 w-full text-gray-400'
-										value={"MGR Paribohon"}
+										value={busOperatorName}
 									/>
 								</div>
 							</div>
@@ -115,23 +152,29 @@ const AddBusOnRoad = () => {
 											{...label}
 											size='small'
 											className='p-0'
+											id='isAC'
 											onChange={() =>
 												handleCheckboxChange(1)
 											}
 										/>
-										<p>Air Conditioner</p>
+										<label htmlFor='isAC'>
+											Air Conditioner
+										</label>
 									</div>
 									<div className='flex items-end gap-2'>
 										<Checkbox
 											checked={isNAC}
 											{...label}
 											size='small'
+											id='isNAC'
 											className='p-0'
 											onChange={() =>
 												handleCheckboxChange(2)
 											}
 										/>
-										<p>Non Air Condition</p>
+										<label htmlFor='isNAC'>
+											Non Air Condition
+										</label>
 									</div>
 								</div>
 							</div>
@@ -234,15 +277,17 @@ const AddBusOnRoad = () => {
 						</div>
 					</div>
 					<div className='mt-5'>
-						<button
+						<Button
 							type='submit'
 							className='py-1 px-4 bg-[#55BDB8] rounded-lg text-white'
 						>
 							Proced to Add New Bus
-						</button>
+						</Button>
 					</div>
 				</form>
 			</div>
+			{isLoading && <Processing />}
+			<Toaster position='top-right' />
 		</div>
 	);
 };

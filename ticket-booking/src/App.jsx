@@ -14,21 +14,11 @@ import { toggleIsLoading } from "./redux/features/userSlice/userSlice";
 
 function App() {
 	const { pathname } = useLocation();
-	const [userEmail, setUserEmail] = useState("");
-	const dispatch = useDispatch();
-	useEffect(() => {
-		onAuthStateChanged(auth, user => {
-			if (user) {
-				setUserEmail(user.email);
-			} else {
-				dispatch(toggleIsLoading(false));
-			}
-		});
-	}, [dispatch]);
+	
 
 	const routeName = pathname.split("/").slice(1, -1).join("/");
 
-	console.log(routeName)
+	
 	return (
 		<div className='overflow-x-hidden'>
 			{routeName !== "signup" && routeName !== "singin" && (

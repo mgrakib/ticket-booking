@@ -1,5 +1,6 @@
 /** @format */
 
+import { Button } from "@mui/material";
 import Container from "../../Container/Container";
 
 
@@ -41,14 +42,14 @@ const ContactUs = () => {
 											name=''
 											id=''
 											className='bg-transparent py-2 w-full outline-none px-2 h-[120px]'
-											placeholder='Name'
+											placeholder='Message'
 										></textarea>
 									</div>
 
 									<div>
-										<button className='py-2 w-full bg-[#26A85E] text-white'>
+										<Button className='py-2 w-full bg-[#26A85E] text-white'>
 											Send Message
-										</button>
+										</Button>
 									</div>
 								</div>
 							</div>

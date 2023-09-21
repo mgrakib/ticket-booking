@@ -1,49 +1,26 @@
 [
    {
-      
-      "busOperator":"Tomu Poribohon",
-      "busNumber":"T201",
-      "isAC" :false,
-      "root":"Dhaka - Kachikata - Noya Bazar - Baraigram - Bonpara - Dashupara - Kushtia",
-      "totalSits":40,
-      "rent":650
-
+      "busNumber":"MG412",
+      "busOperatorName":"MG Poribohon",
+      "businessReg":"MG123",
+      "journeyDate":["2023-09-21"]
    },
    {
-      "busOperator":"Tomu Poribohon",
-      "busNumber":"T202",
-      "isAC" :false,
-      "root":"Dhaka - Kachikata - Noya Bazar - Baraigram - Bonpara - Dashupara - Kushtia",
-      "totalSits":40,
-      "rent":1650
-
+		"busNumber": "MG212",
+		"busOperatorName":"MG Poribohon",
+      "businessReg":"MG123",
+		"journeyDate": ["2023-09-21"]
    },
    {
-      "busOperator":"Tomu Poribohon",
-      "busNumber":"T203",
-      "isAC" :false,
-      "root":"Dhaka - Kachikata - Noya Bazar - Baraigram - Bonpara - Dashupara - Kushtia",
-      "totalSits":40,
-      "rent":650
-
+		"busNumber": "T-101",
+		"busOperatorName": "Tomu Poribohon",
+		"businessReg": "TOMU-P20001",
+		"journeyDate": ["2023-09-21"]
    },
    {
-      "busOperator":"MGR Poribohon",
-      "busNumber":"MGR420",
-      "isAC" :false,
-      "root":"Dhaka - Kachikata - Noya Bazar - Baraigram - Bonpara - Dashupara - Kushtia",
-      "totalSits":36,
-      "rent":650
-
-   },
-   {
-      "busOperator":"MGR Poribohon",
-      "busNumber":"MGR421",
-      "isAC" :false,
-      "root":"Dhaka - Kachikata - Noya Bazar - Baraigram - Bonpara - Dashupara - Kushtia",
-      "totalSits":40,
-      "rent":650
-
+		"busNumber": "MG-102",
+		"busOperatorName":"MG Poribohon",
+      "businessReg":"MG123",
+		"journeyDate": ["2023-09-22"]
    }
-
 ]

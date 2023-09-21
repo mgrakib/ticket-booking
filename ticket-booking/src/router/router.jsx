@@ -11,10 +11,18 @@ import AddBusOnRoad from "../Dashboard/BusOwnerComponent/AddBusOnRoad/AddBusOnRo
 import Register from "../Pages/Register/Register";
 import SignIn from "../Pages/SignIn/SignIn";
 import PrivateRoute from "../Loyout/PrivateRoute/PrivateRoute";
+import AllBusList from "../Dashboard/BusOwnerComponent/AllBusList/AllBusList";
+import LoadingLayout from "../Loyout/LoadingLayout/LoadingLayout";
+import PendingBus from "../Dashboard/Admin/PendingBus/PendingBus";
+import TicketProcessing from "../Pages/TicketProcessing/TicketProcessing";
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <App />,
+		element: (
+			<LoadingLayout>
+				<App />
+			</LoadingLayout>
+		),
 		children: [
 			{
 				path: "/",
@@ -32,6 +40,10 @@ const router = createBrowserRouter([
 				path: "/singin/:params",
 				element: <SignIn />,
 			},
+			{
+				path: '/booking-bus-trip-info',
+				element: <TicketProcessing />
+			}
 		],
 	},
 
@@ -54,6 +66,14 @@ const router = createBrowserRouter([
 			{
 				path: "/dashboard/add-bus-on-road",
 				element: <AddBusOnRoad />,
+			},
+			{
+				path: "/dashboard/all-bus-list",
+				element: <AllBusList />,
+			},
+			{
+				path: "/dashboard/pending-bus",
+				element: <PendingBus />,
 			},
 		],
 	},

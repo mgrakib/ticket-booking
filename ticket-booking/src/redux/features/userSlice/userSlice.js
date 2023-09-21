@@ -33,7 +33,7 @@ export const createUser = createAsyncThunk(
 			}),
         });
         const res =await setInDB.json()
-		
+		console.log(res)
         if (res.message !== "user already exist") {
             const currentUserData = await createUserWithEmailAndPassword(
 				auth,
