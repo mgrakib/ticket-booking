@@ -65,7 +65,12 @@ export const baseAPI = createApi({
 			}),
 			invalidatesTags: ["pendingBus"],
 		}),
+		getSelectBusToProcessTicket: builder.query({
+			query: busNumber => ({
+				url: `/single-on-going-bus?busNumber=${busNumber}`,
+			}),
+		}),
 	}),
 });
 
-export const { useGetBusListQuery, useGetBusOperatorsQuery, useGetBusNumbersQuery, useUpdateBusOnSeduleMutation, useAddNewBusMutation, useGetUserQuery, useGetBusOwnerBusListQuery, useAcceptBusRequestMutation, useGetAllBusByStatusQuery } = baseAPI;
+export const { useGetBusListQuery, useGetBusOperatorsQuery, useGetBusNumbersQuery, useUpdateBusOnSeduleMutation, useAddNewBusMutation, useGetUserQuery, useGetBusOwnerBusListQuery, useAcceptBusRequestMutation, useGetAllBusByStatusQuery, useGetSelectBusToProcessTicketQuery } = baseAPI;

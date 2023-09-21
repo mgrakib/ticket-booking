@@ -2,8 +2,24 @@ import { Button } from "@mui/material";
 import Container from "../../Components/Container/Container";
 import PassengerDetails from "../../Components/PassengerDetails/PassengerDetails";
 import PaymentDetails from "../../Components/PaymentDetails/PaymentDetails";
+import { useGetSelectBusToProcessTicketQuery } from "../../redux/features/api/baseAPI";
+import { useSelector } from "react-redux";
+import moment from "moment";
 
 const TicketProcessing = () => {
+	const { busNumber, selectTickets } = useSelector(
+		state => state.selectTicketSlice
+	);
+	const { data: targetBus = {} } = useGetSelectBusToProcessTicketQuery(busNumber); const {
+		busOperatorName,
+		endingPoint,
+		journeyDate,
+		rent,
+		startingPoint,
+		startingTime,
+	} = targetBus;
+	
+	console.log(startingTime)
     return (
 		<div className=' bg-[#ECECEC] py-5'>
 			<Container>
@@ -22,16 +38,38 @@ const TicketProcessing = () => {
 								<div className='pt-2'>
 									<div className='text-[14px] flex flex-col gap-1'>
 										<p className='text-2xl font-bold text-[#219051]'>
-											Dhaka - Kustiy
+											{startingPoint} - {endingPoint}
 										</p>
-										<p>Hanif Enterprise</p>
-										<p>Sat, 23 Sep 2023, 07:30 AM</p>
+										<p>{busOperatorName}</p>
 										<p>
+											{moment(journeyDate).format(
+												"ddd, MMM D, YYYY"
+											)}
+											,{" "}
+											{moment(
+												startingTime,
+												"HH:mm"
+											).format("h:mm A")}
+										</p>
+										<p className="flex items-center gap-2">
 											Seat No(s):{" "}
 											<span className='text-[#219051] font-bold'>
-												C1
+												{selectTickets?.map((seat, i) => {
+													if (selectTickets.indexOf(seat) === selectTickets.length -1) {
+														return <span key={i}>
+															{seat} 
+														</span>
+													} else {
+														return (
+															<span key={i}>
+																{seat} ,
+															</span>
+														);
+													}
+												})}
 											</span>
 										</p>
+										{/* TODO: Dynamic boarding  */}
 										<p>
 											Boarding at Kallyanpur BRTC Counter
 											, 07:30 AM

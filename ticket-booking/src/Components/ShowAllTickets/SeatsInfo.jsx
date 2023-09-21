@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleBusNumber, toggleSeatSelect } from "../../redux/features/selectTicketSlice/selectTicketSlice";
 
 import warning from "../../assets/warning.png";
+import { Link, useNavigate } from "react-router-dom";
 
 const SeatsInfo = ({
 	busNumber,
@@ -24,6 +25,7 @@ const SeatsInfo = ({
 	_id,
 }) => {
 	const seatsRow = [...Array(parseInt(totalSits / 4)).keys()];
+	const navigate = useNavigate();
 
 	const [seatNumber, setSeatNumber] = useState(null);
 	const handleMouseEnter = num => {
@@ -49,6 +51,18 @@ const SeatsInfo = ({
 		return result;
 	};
 
+
+	const [isSeatBlank, setIsSeatBlank] = useState(false)
+	const handelNavigate = () => {
+		if (!selectTickets.length) {
+			setIsSeatBlank(true)
+		} else {
+			navigate("/booking-bus-trip-info");
+		}
+		
+	}
+
+	
 	return (
 		<div className=''>
 			<p className='text-base font-bold text-[#1E9D49]'>
@@ -442,11 +456,21 @@ const SeatsInfo = ({
 											: selectTickets.length * rent}
 									</p>
 								</div>
+
+								{isSeatBlank && <div>
+									<p className="text-[12px] py-1 px-2 bg-red-100 mt-1">
+										Please choose your seat before you
+										continue.
+									</p>
+								</div>}
 							</div>
 						</div>
 
 						<div className='mt-5 flex items-center justify-between'>
-							<Button className='bg-[#219051] text-white'>
+							<Button
+								onClick={handelNavigate}
+								className='bg-[#219051] text-white'
+							>
 								Continue
 							</Button>
 
