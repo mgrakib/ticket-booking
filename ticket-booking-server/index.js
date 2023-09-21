@@ -10,7 +10,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.nvffntx.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -42,12 +42,14 @@ async function run() {
 		const userCollection = client
 			.db("e-Ticket_booking")
 			.collection("userCollection");
+		const busReservedDate = client
+			.db("e-Ticket_booking")
+			.collection("busReservedDate");
 
 		app.get("/on_going_bus", async (req, res) => {
 			const fromCity = req.query.fromCity;
 			const toCity = req.query.toCity;
 			const doj = req.query.doj;
-
 
 			const query = {
 				startingPoint: fromCity,
@@ -56,32 +58,95 @@ async function run() {
 			};
 
 			const result = await onGoingBusCollections.find(query).toArray();
-				
-			
+
 			res.send(result);
 		});
 
-
-		app.get('/get-all-bus-operators', async (req, res) => {
+		app.get("/get-all-bus-operators", async (req, res) => {
 			const busOperator = await busOperatorsCollections.find().toArray();
 
 			res.send(busOperator);
-		})
+		});
 
-		app.get('/get-bus-number', async (req, res) => {
+		app.get("/get-bus-number", async (req, res) => {
 			const busOperatorName = req?.query?.operatorName;
-			const busNumbers = await busNumbersCollections
+			const journeyDate = req?.query?.journeyDate;
+
+			if (busOperatorName && journeyDate) {
+				const busNumber = await busReservedDate
+					.find({
+						$and: [
+							{ busOperatorName },
+							{ journeyDate: { $nin: [journeyDate] } },
+						],
+					})
+					.toArray();
+
+				res.send(busNumber);
+			}
+		});
+
+		app.get("/get-all-bus-operator", async (req, res) => {
+			const busOperatorName = req.query.busOperatorName;
+			const businessReg = req.query.businessReg;
+			const isApproved = req.query.isApproved;
+
+			let busList = [];
+			if (isApproved) {
+				const allBusList = await allBusInfoCollections
+					.find({
+						$and: [
+							{ busOperatorName },
+							{ businessReg },
+							{ isApproved: JSON.parse(isApproved) },
+						],
+					})
+					.toArray();
+
+				busList = [...allBusList];
+			} else {
+				const allBusList = await allBusInfoCollections
+					.find({
+						$and: [{ busOperatorName }, { businessReg }],
+					})
+					.toArray();
+				busList = [...allBusList];
+			}
+			const totalBus = await allBusInfoCollections.countDocuments({
+				$and: [{ busOperatorName }, { businessReg }],
+			});
+			const pendingBus = await allBusInfoCollections.countDocuments({
+				$and: [
+					{ isApproved: false },
+					{ busOperatorName },
+					{ businessReg },
+				],
+			});
+			const approvedBus = await allBusInfoCollections.countDocuments({
+				$and: [
+					{ isApproved: true },
+					{ busOperatorName },
+					{ businessReg },
+				],
+			});
+
+			res.send({ busList, totalBus, pendingBus, approvedBus });
+		});
+
+		app.get("/get-bus-by-status", async (req, res) => {
+			const isApproved = req.query.isApproved;
+
+			const result = await allBusInfoCollections
 				.find({
-					busOperatorName,
+					isApproved: JSON.parse(isApproved),
 				})
 				.toArray();
 
-			res.send(busNumbers);
-		})
+			res.send(result);
+		});
 
-	
-		// set bus deule for admin 
-		app.post('/set-bus-on-sedule', async (req, res) => {
+		// set bus deule for admin
+		app.post("/set-bus-on-sedule", async (req, res) => {
 			const busInfo = req.body;
 			const extraInfo = await allBusInfoCollections.findOne({
 				busNumber: busInfo?.busNumber,
@@ -89,28 +154,140 @@ async function run() {
 
 			const newBusSedule = {
 				...busInfo,
-				...extraInfo,
+				...Object.entries(extraInfo).reduce((acc, [key, value]) => {
+					if (key !== "_id") {
+						acc[key] = value;
+					}
+					return acc;
+				}, {}),
 				bookedSits: 0,
-				bookedSitsNumber:[]
+				bookedSitsNumber: [],
 			};
-			
-			
-			const addNewBusOnSedule = await onGoingBusCollections.insertOne(newBusSedule)
+			const addNewBusOnSedule = await onGoingBusCollections.insertOne(
+				newBusSedule
+			);
 
-			console.log(addNewBusOnSedule);
+			const query = {
+				$and: [
+					{ busOperatorName: busInfo?.busOperatorName },
+					{ busNumber: busInfo?.busNumber },
+				],
+			};
+			const addJournyDate = await busReservedDate.updateOne(query, {
+				$push: {
+					journeyDate: busInfo?.journeyDate,
+				},
+			});
+
 			res.send(addNewBusOnSedule);
-		})
+		});
 
-		app.post('/add-new-bus', async (req, res) => {
-			const newBusInfo = req.body;
+		app.post("/add-new-bus", async (req, res) => {
+			const body = req.body;
+			const isExistBus = await allBusInfoCollections.findOne({
+				$and: [
+					{ busNumber: body?.busNumber }, // Check if busNumber matches
+					{ busOperatorName: body?.busOperatorName }, // Check if busOperatorName matches
+				],
+			});
 
-			console.log(newBusInfo)
+			if (isExistBus) {
+				return res.send({
+					message: "The Bus Already Exist",
+				});
+			} else {
+				const insertNewBus = await allBusInfoCollections.insertOne({
+					...body,
+					rent: parseInt(body.rent),
+					totalSits: parseInt(body.totalSits),
+					isApproved: false,
+				});
 
-			res.send({})
-		})
+				res.send(insertNewBus);
+			}
+		});
 
+		app.patch("/accept-bus-request", async (req, res) => {
+			const id = req.query.id;
 
-		app.post('/create-user', async (req, res) => {
+			const query = {
+				_id: new ObjectId(id),
+			};
+			const getPendingBus = await allBusInfoCollections.findOne(query);
+
+			if (getPendingBus) {
+				const updateDoc = {
+					$set: {
+						isApproved: true,
+					},
+				};
+				const result = await allBusInfoCollections.updateOne(
+					query,
+					updateDoc
+				);
+
+				const operatorDocument = await busReservedDate.findOne({
+					busNumber: getPendingBus?.busNumber,
+				});
+
+				if (!operatorDocument) {
+					const insertDoc = {
+						busNumber: getPendingBus?.busNumber,
+						busOperatorName: getPendingBus?.busOperatorName,
+						businessReg: getPendingBus?.businessReg,
+						journeyDate: [],
+					};
+
+					const operatorDocument = await busReservedDate.insertOne(insertDoc);
+					res.send(operatorDocument);
+				}
+				// if (!operatorDocument) {
+				// 	const document = {
+				// 		busOperatorName: getPendingBus?.busOperatorName,
+				// 		busNumbers: [getPendingBus?.busNumber],
+				// 		businessReg: getPendingBus?.businessReg,
+				// 	};
+				// 	const addBusNumber = await busNumbersCollections.insertOne(
+				// 		document
+				// 	);
+
+				// } else if (operatorDocument) {
+				// 	const isAlreadyIn =
+				// 		operatorDocument.busNumbers.includes(getPendingBus?.busNumber);
+
+				// 	if (isAlreadyIn) {
+				// 		return res.send({
+				// 			messate:'The Bus Number is Already In'
+				// 		})
+				// 	} else {
+				// 		  const result =
+				// 				await busNumbersCollections.updateOne(
+				// 					{ businessReg: getPendingBus.businessReg },
+				// 					{
+				// 						$push: {
+				// 							busNumbers: getPendingBus.busNumber,
+				// 						},
+				// 					}
+				// 			);
+
+				// 		res.send(result);
+				// 	}
+				// }
+			}
+
+			// if (
+			// 	operatorDocument &&
+			// 	operatorDocument.ticketNumber.includes(getPendingBus?.busNumber)
+			// ) {
+			// 	res.send(operatorDocument);
+			// } else {
+			// 	res.send({
+			// 		message: "nai",
+			// 	});
+			// }
+		});
+
+		app.post("/create-user", async (req, res) => {
 			const {
 				email,
 				name,
@@ -128,13 +305,15 @@ async function run() {
 				],
 			});
 
-			console.log(isExist);
-			if (isExist) {
+			const isBusOperatorExist = await busOperatorsCollections.findOne({
+				businessReg,
+			});
+
+			if (isExist && isBusOperatorExist) {
 				return res.send({
-					message:'user already exist'
-				})
-			} else {
-				
+					message: "user already exist",
+				});
+			} else if (!isExist && isBusOperatorExist) {
 				const insertNewUser = await userCollection.insertOne({
 					email,
 					name,
@@ -143,22 +322,42 @@ async function run() {
 					phoneNumber,
 					role,
 				});
+
 				res.send(insertNewUser);
-				}
+			} else if (isExist && !isBusOperatorExist) {
+				const inserTBusOperator =
+					await busOperatorsCollections.insertOne({
+						busOperatorName,
+						businessReg,
+					});
 
-			
-		})
+				res.send(inserTBusOperator);
+			} else {
+				const insertNewUser = await userCollection.insertOne({
+					email,
+					name,
+					businessReg,
+					busOperatorName,
+					phoneNumber,
+					role,
+				});
+				const inserTBusOperator =
+					await busOperatorsCollections.insertOne({
+						busOperatorName,
+						businessReg,
+					});
 
-		app.get('/get-user', async (req, res) => {
+				console.log("isExost true isBusOperatorExist true");
+				res.send({ insertNewUser, inserTBusOperator });
+			}
+		});
+
+		app.get("/get-user", async (req, res) => {
 			const email = req.query.email;
 			const getUser = await userCollection.findOne({ email });
-			console.log(getUser)
 
-			res.send(getUser)
-		})
-
-
-
+			res.send(getUser);
+		});
 
 		// Send a ping to confirm a successful connection
 		await client.db("admin").command({ ping: 1 });
