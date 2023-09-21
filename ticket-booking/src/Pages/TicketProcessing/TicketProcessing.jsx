@@ -4,7 +4,7 @@ import { Button, Checkbox, FormControlLabel, Radio } from "@mui/material";
 import Container from "../../Components/Container/Container";
 
 
-import { useGetSelectBusToProcessTicketQuery } from "../../redux/features/api/baseAPI";
+import { useGetSelectBusToProcessTicketQuery, usePostOrderPaymentMutation } from "../../redux/features/api/baseAPI";
 import { useSelector } from "react-redux";
 
 import { useForm } from "react-hook-form";
@@ -23,10 +23,12 @@ import other from "../../../public/other.svg";
 import FareDetails from "../../Components/FareDetails/FareDetails";
 
 import './TicketProcessing.css'
+import moment from "moment";
 const TicketProcessing = () => {
 	// state for tab and Insure
 	const [isSecure, setIsSecure] = useState(true);
 	const [activeTab, setActiveTab] = useState("mobile");
+	const [isPolicyAccept, setIsPolicyAccept] = useState(false)
 
 
 	// get all select seats 
@@ -36,6 +38,8 @@ const TicketProcessing = () => {
 
 	const { data: targetBus = {} } =
 		useGetSelectBusToProcessTicketQuery(busNumber);
+	const [postPaymentInfo, { data: paymentRespons }] =
+		usePostOrderPaymentMutation();
 
 	const [ticketDetails, setTicketDetails] = useState(
 		selectedSeats.map(seat => ({
@@ -78,11 +82,25 @@ const TicketProcessing = () => {
 			email: data.email,
 			mobileNum: data.mobileNum,
 			isSecure,
+			totalAmount,
+			journeyDate: targetBus?.journeyDate,
+			busOperatorName: targetBus?.busOperatorName,
+			busNumber: targetBus?.busNumber,
+			paymentDate: moment(new Date()).format("YYYY-MM-DD")
 		};
 
-		console.log(allInfo)
+		if (!isPolicyAccept) {
+			alert('please accept our plicy')
+			
+		} else {
+			postPaymentInfo(allInfo)
+				.then(res => window.location.replace(res.data.url))
+				.catch(err => console.log(err));
+		}
+			
 	};
 
+	
 	const ticketPrice = targetBus?.rent * selectedSeats.length;
 	const processingFee = 30 * selectedSeats.length;
 	const discount = 0;
@@ -155,7 +173,13 @@ const TicketProcessing = () => {
 						</p>
 					</div>
 					<div className='mt-10 flex items-center justify-center'>
-						<Button className='text-white bg-[#219051] px-10 '>
+						<Button
+							disabled={!isPolicyAccept}
+							type='submit'
+							className={`text-white bg-[#219051] px-10  ${
+								!isPolicyAccept && "cursor-not-allowed"
+							}`}
+						>
 							Confirm Reservation
 						</Button>
 					</div>
@@ -203,12 +227,15 @@ const TicketProcessing = () => {
 				</div>
 
 				<div className='flex items-center justify-center'>
-					<Button className='text-white bg-[#219051] px-10 mt-8'>
+					<Button
+						type='submit'
+						className='text-white bg-[#219051] px-10 mt-8'
+					>
 						Proceed to Pay
 					</Button>
 				</div>
 			</>
-	);
+		);
 	
 	const label = { inputProps: { "aria-label": "Checkbox demo" } };
 	return (
@@ -358,10 +385,6 @@ const TicketProcessing = () => {
 													/>
 												</div>
 											</div>
-
-											<button type='submit'>
-												Sumbit
-											</button>
 										</div>
 									</div>
 								</div>
@@ -466,6 +489,10 @@ const TicketProcessing = () => {
 										<div className='mt-5'>
 											<div className='p-5 border bg-[#E9F6F1] border-gray-400 flex items-start gap-1'>
 												<Checkbox
+													onChange={() =>
+														setIsPolicyAccept((pre) => !pre)
+													}
+													checked={isPolicyAccept}
 													id='acceptPolicy'
 													{...label}
 													className='text-[#219051]'

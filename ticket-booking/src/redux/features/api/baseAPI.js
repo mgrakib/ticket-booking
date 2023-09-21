@@ -70,7 +70,15 @@ export const baseAPI = createApi({
 				url: `/single-on-going-bus?busNumber=${busNumber}`,
 			}),
 		}),
+		postOrderPayment: builder.mutation({
+			query: (body) => ({
+				
+				url: `/order`,
+				method: 'POST',
+				body
+			}),
+		}),
 	}),
 });
 
-export const { useGetBusListQuery, useGetBusOperatorsQuery, useGetBusNumbersQuery, useUpdateBusOnSeduleMutation, useAddNewBusMutation, useGetUserQuery, useGetBusOwnerBusListQuery, useAcceptBusRequestMutation, useGetAllBusByStatusQuery, useGetSelectBusToProcessTicketQuery } = baseAPI;
+export const { useGetBusListQuery, useGetBusOperatorsQuery, useGetBusNumbersQuery, useUpdateBusOnSeduleMutation, useAddNewBusMutation, useGetUserQuery, useGetBusOwnerBusListQuery, useAcceptBusRequestMutation, useGetAllBusByStatusQuery, useGetSelectBusToProcessTicketQuery, usePostOrderPaymentMutation } = baseAPI;

@@ -2,14 +2,7 @@ import moment from 'moment';
 
 
 const JourneyDetails = ({ targetBus, selectedSeats }) => {
-	const {
-		busOperatorName,
-		endingPoint,
-		journeyDate,
-		rent,
-		startingPoint,
-		startingTime,
-	} = targetBus;
+	
 	return (
 		<div>
 			<div className='border-l-4 border-[#219051] px-4 mt-12 py-2 bg-[#FAFAFA]'>
@@ -19,12 +12,18 @@ const JourneyDetails = ({ targetBus, selectedSeats }) => {
 				<div className='pt-2'>
 					<div className='text-[14px] flex flex-col gap-1'>
 						<p className='text-2xl font-bold text-[#219051]'>
-							{startingPoint} - {endingPoint}
+							{targetBus?.startingPoint} -{" "}
+							{targetBus?.endingPoint}
 						</p>
-						<p>{busOperatorName}</p>
+						<p>{targetBus?.busOperatorName}</p>
 						<p>
-							{moment(journeyDate).format("ddd, MMM D, YYYY")},{" "}
-							{moment(startingTime, "HH:mm").format("h:mm A")}
+							{moment(targetBus?.journeyDate).format(
+								"ddd, MMM D, YYYY"
+							)}
+							,{" "}
+							{moment(targetBus?.startingTime, "HH:mm").format(
+								"h:mm A"
+							)}
 						</p>
 						<p className='flex items-center gap-2'>
 							Seat No(s):{" "}
