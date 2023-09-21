@@ -3,6 +3,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const SSLCommerzPayment = require("sslcommerz-lts");
 require("dotenv").config();
 
 const port = process.env.PORT || 5000;
@@ -22,6 +23,9 @@ const client = new MongoClient(uri, {
 	},
 });
 
+const store_id = process.env.VITE_STORE_ID;
+const store_passwd = process.env.VITE_STORE_PASS;
+const is_live = false; //true for live, false for sandbox
 async function run() {
 	try {
 		// Connect the client to the server	(optional starting in v4.7)
@@ -33,7 +37,7 @@ async function run() {
 		const busOperatorsCollections = client
 			.db("e-Ticket_booking")
 			.collection("busOperators");
-		
+
 		const allBusInfoCollections = client
 			.db("e-Ticket_booking")
 			.collection("allBusInfo");
@@ -43,6 +47,9 @@ async function run() {
 		const busReservedDate = client
 			.db("e-Ticket_booking")
 			.collection("busReservedDate");
+		const paymentCollection = client
+			.db("e-Ticket_booking")
+			.collection("payment");
 
 		app.get("/on_going_bus", async (req, res) => {
 			const fromCity = req.query.fromCity;
@@ -60,11 +67,11 @@ async function run() {
 			res.send(result);
 		});
 
-		app.get('/single-on-going-bus', async(req, res) => {
+		app.get("/single-on-going-bus", async (req, res) => {
 			const busNumber = req.query.busNumber;
-			const result = await onGoingBusCollections.findOne({ busNumber })
-			res.send(result)
-		})
+			const result = await onGoingBusCollections.findOne({ busNumber });
+			res.send(result);
+		});
 
 		app.get("/get-all-bus-operators", async (req, res) => {
 			const busOperator = await busOperatorsCollections.find().toArray();
@@ -242,7 +249,9 @@ async function run() {
 						journeyDate: [],
 					};
 
-					const operatorDocument = await busReservedDate.insertOne(insertDoc);
+					const operatorDocument = await busReservedDate.insertOne(
+						insertDoc
+					);
 					res.send(operatorDocument);
 				}
 				// if (!operatorDocument) {
@@ -361,6 +370,118 @@ async function run() {
 			const getUser = await userCollection.findOne({ email });
 
 			res.send(getUser);
+		});
+
+		// payment
+		app.post("/order", async (req, res) => {
+			const {
+				passengerInfo,
+				email,
+				mobileNum,
+				isSecure,
+				totalAmount,
+				journeyDate,
+				busOperatorName,
+				busNumber,
+				paymentDate,
+			} = req.body;
+
+			const tran_id = new ObjectId().toString();
+
+			const data = {
+				total_amount: totalAmount,
+				currency: "BDT",
+				tran_id: tran_id, // use unique tran_id for each api call
+				success_url: `http://localhost:5000/payment/success/${tran_id}`,
+				fail_url: "http://localhost:3030/fail",
+				cancel_url: "http://localhost:3030/cancel",
+				ipn_url: "http://localhost:3030/ipn",
+				shipping_method: "Courier",
+				product_name: "Computer.",
+				product_category: "Electronic",
+				product_profile: "general",
+				cus_name: "Customer Name",
+				cus_email: email,
+				cus_add1: "Dhaka",
+				cus_add2: "Dhaka",
+				cus_city: "Dhaka",
+				cus_state: "Dhaka",
+				cus_postcode: "1000",
+				cus_country: "Bangladesh",
+				cus_phone: mobileNum,
+				cus_fax: "01711111111",
+				ship_name: "Customer Name",
+				ship_add1: "Dhaka",
+				ship_add2: "Dhaka",
+				ship_city: "Dhaka",
+				ship_state: "Dhaka",
+				ship_postcode: 1000,
+				ship_country: "Bangladesh",
+			};
+			const sslcz = new SSLCommerzPayment(
+				store_id,
+				store_passwd,
+				is_live
+			);
+			sslcz.init(data).then(apiResponse => {
+				// Redirect the user to payment gateway
+				let GatewayPageURL = apiResponse.GatewayPageURL;
+				console.log(GatewayPageURL);
+				res.send({ url: GatewayPageURL });
+
+				const finalPayment = {
+					passengerInfo,
+					email,
+					mobileNum,
+					totalAmount,
+					isSecure,
+					paid: false,
+					tran_id,
+					paymentDate,
+					journeyDate,
+					busOperatorName,
+					busNumber,
+				};
+				const result = paymentCollection.insertOne(finalPayment);
+			});
+
+			app.post("/payment/success/:tran", async (req, res) => {
+				const updateStatus = await paymentCollection.updateOne(
+					{ tran_id: req.params.tran },
+					{
+						$set: {
+							paid: true,
+						},
+					}
+				);
+
+				const bookedSeats = passengerInfo.map(seat => seat.seat);
+
+				console.log(bookedSeats)
+
+				if (updateStatus.modifiedCount > 0) {
+					
+
+					const booking = await onGoingBusCollections.findOne({
+						busOperatorName,
+						journeyDate,
+						busNumber,
+					});
+
+					if (booking) {
+						booking.bookedSitsNumber = [...bookedSeats, ...booking.bookedSitsNumber];
+					}
+
+					console.log(booking, ' as')
+					await onGoingBusCollections.updateOne(
+						{ _id: booking._id },
+						{ $set: booking }
+					);
+
+					
+					res.redirect("http://localhost:5173/");
+				}
+			});
 		});
 
 		// Send a ping to confirm a successful connection
