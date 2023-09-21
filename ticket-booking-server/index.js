@@ -33,9 +33,7 @@ async function run() {
 		const busOperatorsCollections = client
 			.db("e-Ticket_booking")
 			.collection("busOperators");
-		const busNumbersCollections = client
-			.db("e-Ticket_booking")
-			.collection("busNumbers");
+		
 		const allBusInfoCollections = client
 			.db("e-Ticket_booking")
 			.collection("allBusInfo");
@@ -61,6 +59,12 @@ async function run() {
 
 			res.send(result);
 		});
+
+		app.get('/single-on-going-bus', async(req, res) => {
+			const busNumber = req.query.busNumber;
+			const result = await onGoingBusCollections.findOne({ busNumber })
+			res.send(result)
+		})
 
 		app.get("/get-all-bus-operators", async (req, res) => {
 			const busOperator = await busOperatorsCollections.find().toArray();
