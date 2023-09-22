@@ -9,7 +9,7 @@ const ContactUs = () => {
 	return (
 		<div className='md:py-10'>
 			<Container>
-				<div className='md:py-10 '>
+				<div className=''>
 					<div className='flex flex-col md:flex-row items-center gap-5'>
 						{/* from  */}
 						<div className='w-full md:w-[40%] text-center'>

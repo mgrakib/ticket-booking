@@ -14,7 +14,7 @@ const SearchTickets = () => {
 	const doj = queryParams.get("doj");
 
 	
-	const { data: targetedTickets, isLoading, isError } = useGetBusListQuery({ fromCity, toCity, doj });
+	const { data: targetedTickets, isLoading:isTicketLoading, isError } = useGetBusListQuery({ fromCity, toCity, doj });
 	
 	
 
@@ -70,7 +70,10 @@ const SearchTickets = () => {
 						</div>
 
 						<div className='w-[75%] '>
-							<ShowAllTickets targetedTickets={targetedTickets} />
+							<ShowAllTickets
+								targetedTickets={targetedTickets}
+								isTicketLoading={isTicketLoading}
+							/>
 						</div>
 					</div>
 				</Container>

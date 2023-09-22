@@ -9,8 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleBusNumber } from "../../redux/features/selectTicketSlice/selectTicketSlice";
 import Lottie from "lottie-react";
 import NotFound from '../../../public/notFound.json'
+import { TbLoader } from "react-icons/tb";
+import DataFetcingLoading from "../DataFetcingLoading/DataFetcingLoading";
 
-const ShowAllTickets = ({ targetedTickets }) => {
+const ShowAllTickets = ({ targetedTickets, isTicketLoading }) => {
+
+	
 	const [rowId, setRowId] = useState(null);
 	const handelViewSeat = _id => {
 		if (rowId && rowId === _id) {
@@ -24,8 +28,6 @@ const ShowAllTickets = ({ targetedTickets }) => {
 	const { busNumber: selectBusNumber, selectedSeats } = useSelector(
 		state => state.selectTicketSlice
 	);
-
-	
 
 	const [isFullMessageShow, setIsFullMessageShow] = useState(false);
 	useEffect(() => {
@@ -44,10 +46,9 @@ const ShowAllTickets = ({ targetedTickets }) => {
 						<div className='w-[15%]'>Fare</div>
 					</div>
 
-					<div>
-						{targetedTickets?.length > 0 ? (
+					<div className='h-full'>
+						{isTicketLoading ?  <DataFetcingLoading /> : targetedTickets?.length > 0 ? (
 							targetedTickets?.map(ticket => {
-								
 								const {
 									busOperatorName,
 									araiveTime,
@@ -191,11 +192,18 @@ const ShowAllTickets = ({ targetedTickets }) => {
 								);
 							})
 						) : (
-								<div className=" text-center">
-									<p className="mt-10 text-gray-500">No Ticket(s) Available </p>
-								<Lottie animationData={NotFound} className="w-[50%] mx-auto"/>
+							<div className=' text-center'>
+								<p className='mt-10 text-gray-500'>
+									No Ticket(s) Available{" "}
+								</p>
+								<Lottie
+									animationData={NotFound}
+									className='w-[50%] mx-auto'
+								/>
 							</div>
-						)}
+						)} 
+						
+						
 					</div>
 				</div>
 			</div>

@@ -1,0 +1,9 @@
+.angle-traingel{
+    clip-path: polygon(0 0, 100% 0%, 85% 100%, 0% 100%);
+}
+.angle-traingel2{
+    clip-path: polygon(0 0, 100% 0%, 83% 100%, 0% 100%);
+}
+.angle-traingel3{
+    clip-path: polygon(0 0, 100% 0%, 81% 100%, 0% 100%);
+}

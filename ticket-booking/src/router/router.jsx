@@ -15,6 +15,10 @@ import AllBusList from "../Dashboard/BusOwnerComponent/AllBusList/AllBusList";
 import LoadingLayout from "../Loyout/LoadingLayout/LoadingLayout";
 import PendingBus from "../Dashboard/Admin/PendingBus/PendingBus";
 import TicketProcessing from "../Pages/TicketProcessing/TicketProcessing";
+import PaymentSuccess from "../Pages/PaymentSuccess/PaymentSuccess";
+import PaymentFailed from "../Pages/PaymentFailed/PaymentFailed";
+
+import Invoice from "../Pages/Invoice/Invoice";
 const router = createBrowserRouter([
 	{
 		path: "/",
@@ -43,7 +47,20 @@ const router = createBrowserRouter([
 			{
 				path: '/booking-bus-trip-info',
 				element: <TicketProcessing />
-			}
+			},
+			{
+				path: '/payment-successfull/:tarn',
+				element: <PaymentSuccess />
+			},
+			{
+				path: '/invoice',
+				element: <Invoice />
+			},
+			{
+				path: '/payment-failed',
+				element: <PaymentFailed />
+			},
+			
 		],
 	},
 

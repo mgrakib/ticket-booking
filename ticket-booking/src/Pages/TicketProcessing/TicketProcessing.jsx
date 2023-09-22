@@ -24,6 +24,7 @@ import FareDetails from "../../Components/FareDetails/FareDetails";
 
 import './TicketProcessing.css'
 import moment from "moment";
+import Processing from "../../Components/Processing/Processing";
 const TicketProcessing = () => {
 	// state for tab and Insure
 	const [isSecure, setIsSecure] = useState(true);
@@ -38,7 +39,7 @@ const TicketProcessing = () => {
 
 	const { data: targetBus = {} } =
 		useGetSelectBusToProcessTicketQuery(busNumber);
-	const [postPaymentInfo, { data: paymentRespons }] =
+	const [postPaymentInfo, { data: paymentRespons, isLoading:isPaymentLoading }] =
 		usePostOrderPaymentMutation();
 
 	const [ticketDetails, setTicketDetails] = useState(
@@ -48,6 +49,8 @@ const TicketProcessing = () => {
 			passengerName: "",
 		}))
 	);
+
+	
 
 	const handelGenderChange = (gender, seat) => {
 		setTicketDetails(prevDetails =>
@@ -100,6 +103,7 @@ const TicketProcessing = () => {
 			
 	};
 
+	console.log(isPaymentLoading, ' payment');
 	
 	const ticketPrice = targetBus?.rent * selectedSeats.length;
 	const processingFee = 30 * selectedSeats.length;
@@ -260,6 +264,12 @@ const TicketProcessing = () => {
 											>
 												{/* full name  */}
 												<div>
+													<div>
+														Seat No
+														<small className='ml-2 text-[#219051] font-bold'>
+															#{ticket.seat}
+														</small>
+													</div>
 													<label
 														htmlFor={`fullName_${ticket.seat}`}
 														className='cusTomeRequired font-semibold'
@@ -275,7 +285,7 @@ const TicketProcessing = () => {
 															)}
 															id={`fullName_${ticket.seat}`}
 															className='py-1 px-2 outline-none w-full bg-transparent focus:shadow-[0_0_5px_#219051] duration-200'
-															placeholder='Enter Full Name'
+															placeholder={`Enter Full`}
 														/>
 													</div>
 												</div>
@@ -490,7 +500,9 @@ const TicketProcessing = () => {
 											<div className='p-5 border bg-[#E9F6F1] border-gray-400 flex items-start gap-1'>
 												<Checkbox
 													onChange={() =>
-														setIsPolicyAccept((pre) => !pre)
+														setIsPolicyAccept(
+															pre => !pre
+														)
 													}
 													checked={isPolicyAccept}
 													id='acceptPolicy'
@@ -575,6 +587,8 @@ const TicketProcessing = () => {
 						</div>
 					</div>
 				</form>
+
+				{isPaymentLoading && <Processing />}
 			</Container>
 		</div>
 	);
