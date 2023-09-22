@@ -393,7 +393,7 @@ async function run() {
 				currency: "BDT",
 				tran_id: tran_id, // use unique tran_id for each api call
 				success_url: `http://localhost:5000/payment/success/${tran_id}`,
-				fail_url: "http://localhost:3030/fail",
+				fail_url: `http://localhost:5000/payment/failed/${tran_id}`,
 				cancel_url: "http://localhost:3030/cancel",
 				ipn_url: "http://localhost:3030/ipn",
 				shipping_method: "Courier",
@@ -472,16 +472,29 @@ async function run() {
 						booking.bookedSitsNumber = [...bookedSeats, ...booking.bookedSitsNumber];
 					}
 
-					console.log(booking, ' as')
+					
 					await onGoingBusCollections.updateOne(
 						{ _id: booking._id },
 						{ $set: booking }
 					);
 
-					
-					res.redirect("http://localhost:5173/");
+					// TODO: change the mail link 
+					res.redirect(
+						`http://localhost:5173/payment-successfull/${tran_id}`
+					);
 				}
 			});
+
+			app.post('/payment/failed/:tran', async (req, res) => {
+				const tran_id = req.params.tran;
+				const result  = await paymentCollection.deleteOne({
+					tran_id
+				})
+
+				res.redirect("http://localhost:5173/payment-failed");
+			})
+
+			
 		});
 
 		// Send a ping to confirm a successful connection
