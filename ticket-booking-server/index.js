@@ -380,8 +380,12 @@ async function run() {
 				mobileNum,
 				isSecure,
 				totalAmount,
+				startingPoint,
+				endingPoint,
 				journeyDate,
+				startingTime,
 				busOperatorName,
+				isAC,
 				busNumber,
 				paymentDate,
 			} = req.body;
@@ -429,35 +433,44 @@ async function run() {
 				console.log(GatewayPageURL);
 				res.send({ url: GatewayPageURL });
 
+				
 				const finalPayment = {
+					
+					paid: false,
+					tran_id,
 					passengerInfo,
 					email,
 					mobileNum,
-					totalAmount,
 					isSecure,
-					paid: false,
-					tran_id,
-					paymentDate,
+					totalAmount,
+					startingPoint,
+					endingPoint,
 					journeyDate,
+					startingTime,
 					busOperatorName,
+					isAC,
 					busNumber,
+					paymentDate,
 				};
 				const result = paymentCollection.insertOne(finalPayment);
 			});
 
 			app.post("/payment/success/:tran", async (req, res) => {
+				const getTotalNumberOfPayment =
+					await paymentCollection.countDocuments();
+				
 				const updateStatus = await paymentCollection.updateOne(
 					{ tran_id: req.params.tran },
 					{
 						$set: {
 							paid: true,
+							invoiceNumber: `E-TB97${getTotalNumberOfPayment}`,
 						},
 					}
 				);
 
 				const bookedSeats = passengerInfo.map(seat => seat.seat);
 
-				console.log(bookedSeats)
 
 				if (updateStatus.modifiedCount > 0) {
 					
@@ -497,6 +510,12 @@ async function run() {
 			
 		});
 
+
+		app.get('/get-payment-history', async (req, res) => {
+			const tran_id = req.query.tran_id;
+			const paymentHistory = await paymentCollection.findOne({tran_id});
+			res.send(paymentHistory);
+		})
 		// Send a ping to confirm a successful connection
 		await client.db("admin").command({ ping: 1 });
 		console.log(
