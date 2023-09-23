@@ -524,10 +524,7 @@ async function run() {
 			const result = await busStationName
 				.find({ busStationName: true })
 				.toArray();
-			
 			const stationName = result?.[0]?.districts;
-
-			console.log(stationName, ' jklasf')
 			res.send(stationName);
 		})
 
