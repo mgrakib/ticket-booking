@@ -45,7 +45,7 @@ const DashboardSidBar = () => {
 
 	const dispatch = useDispatch();
 	const handelSingOut = () => {
-		console.log('first')
+		
 		signOut(auth)
 			.then(() => {
 				dispatch(logOut())
@@ -55,28 +55,49 @@ const DashboardSidBar = () => {
 			});
 	}
     return (
-		<div className='py-2 pl-2 pr-5  flex flex-col justify-between h-full'>
+		<div
+			onClick={() => setIsModalOpen(false)}
+			className='py-2 pl-2 pr-5  flex flex-col justify-between h-full'
+		>
 			<div>
 				<div className='w-[20px] h-[20px] bg-gray-500'></div>
 				<div className='text-gray-200 '>
-					{role === "busOperator" && "Bus Operator Dashboard"}
+					{role === "busOperator"
+						? "Bus Operator Dashboard"
+						: "Admin Dashboard"}
 				</div>
 			</div>
 			{/* nav item  */}
 			<ul>
-				{busOperatorNavItems.map((item, index) => (
-					<Link
-						key={index}
-						to={item?.path}
-					>
-						<li className='text-gray-300 py-1'>{item.title}</li>
-					</Link>
-				))}
+				{role === "admin"
+					? adminNavIteams.map((item, index) => (
+							<Link
+								key={index}
+								to={item?.path}
+							>
+								<li className='text-gray-300 py-1'>
+									{item.title}
+								</li>
+							</Link>
+					  ))
+					: busOperatorNavItems.map((item, index) => (
+							<Link
+								key={index}
+								to={item?.path}
+							>
+								<li className='text-gray-300 py-1'>
+									{item.title}
+								</li>
+							</Link>
+					  ))}
 			</ul>
 			{/* account  */}
 			<div>
 				<div
-					onClick={() => setIsModalOpen(!isModalOpen)}
+					onClick={event => {
+						event.stopPropagation();
+						setIsModalOpen(!isModalOpen);
+					}}
 					className='flex gap-2 items-center cursor-pointer relative'
 				>
 					<div className='w-[30px] h-[30px] bg-gray-200 rounded '></div>

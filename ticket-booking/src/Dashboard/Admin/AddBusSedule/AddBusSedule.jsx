@@ -11,12 +11,15 @@ import {
 import { ImSpinner8 } from "react-icons/im";
 import Processing from "../../../Components/Processing/Processing";
 import toast, { Toaster } from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 
 const AddBusSedule = () => {
 	const [journeyDate, setJourneyDate] = useState(null);
 	const [busOperatorName, setBusOperatorName] = useState(null);
-
+const { busStationName: stationsName } = useSelector(
+	state => state?.busStationNameSlice
+);
 	const { data: busOperator } = useGetBusOperatorsQuery();
 	const { data: busNumbersArray } = useGetBusNumbersQuery({
 		busOperatorName,
@@ -223,15 +226,16 @@ const AddBusSedule = () => {
 											Starting Point
 										</option>
 
-										<option value='Dhaka'>Dhaka</option>
-										<option value='Kushtia'>Kushtia</option>
-										<option value='Patuakhali'>
-											Patuakhali
-										</option>
-										<option value='Barishal'>
-											Barishal
-										</option>
-										<option value='Comilla'>Comilla</option>
+										{stationsName.map((station, index) => {
+											return (
+												<option
+													key={index}
+													value={station}
+												>
+													{station}
+												</option>
+											);
+										})}
 									</select>
 								</div>
 								{errors.startingPoint?.type === "required" && (
@@ -269,15 +273,16 @@ const AddBusSedule = () => {
 											Ending Point
 										</option>
 
-										<option value='Dhaka'>Dhaka</option>
-										<option value='Kushtia'>Kushtia</option>
-										<option value='Patuakhali'>
-											Patuakhali
-										</option>
-										<option value='Barishal'>
-											Barishal
-										</option>
-										<option value='Comilla'>Comilla</option>
+										{stationsName.map((station, index) => {
+											return (
+												<option
+													key={index}
+													value={station}
+												>
+													{station}
+												</option>
+											);
+										})}
 									</select>
 								</div>
 								{errors.endingPoint?.type === "required" && (

@@ -86,8 +86,12 @@ const TicketProcessing = () => {
 			mobileNum: data.mobileNum,
 			isSecure,
 			totalAmount,
+			startingPoint: targetBus?.startingPoint,
+			endingPoint: targetBus?.endingPoint,
 			journeyDate: targetBus?.journeyDate,
+			startingTime: targetBus?.startingTime,
 			busOperatorName: targetBus?.busOperatorName,
+			isAC: targetBus?.isAC,
 			busNumber: targetBus?.busNumber,
 			paymentDate: moment(new Date()).format("YYYY-MM-DD")
 		};

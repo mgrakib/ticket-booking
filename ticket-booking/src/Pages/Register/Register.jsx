@@ -8,6 +8,7 @@ import { Button, TextField } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createUser } from "../../redux/features/userSlice/userSlice";
+import './Register.css'
 const Register = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -67,10 +68,7 @@ const Register = () => {
 	};
 
 
-	if (params === "user") {
-		return <div>alsfj</div>;
-	} else {
-        return (
+	 return (
 			<div className='w-screen h-screen'>
 				<div className='flex items-center h-full'>
 					<div
@@ -96,7 +94,7 @@ const Register = () => {
 								Welcome to Bus Booking
 							</p>
 							<p className='text-gray-500'>
-								Sign Up your Account
+								Sign Up your Account Bus Operator Account
 							</p>
 
 							<form onSubmit={handleSubmit(onSubmit)}>
@@ -185,7 +183,8 @@ const Register = () => {
 													role='alert'
 													className='text-[11px] text-red-500'
 												>
-													Business Registation is required
+													Business Registation is
+													required
 												</p>
 											)}
 										</div>
@@ -329,7 +328,6 @@ const Register = () => {
 				</div>
 			</div>
 		);
-	}
 };
 
 export default Register;

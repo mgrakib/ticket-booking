@@ -10,7 +10,7 @@ import AddBusSedule from "../Dashboard/Admin/AddBusSedule/AddBusSedule";
 import AddBusOnRoad from "../Dashboard/BusOwnerComponent/AddBusOnRoad/AddBusOnRoad";
 import Register from "../Pages/Register/Register";
 import SignIn from "../Pages/SignIn/SignIn";
-import PrivateRoute from "../Loyout/PrivateRoute/PrivateRoute";
+
 import AllBusList from "../Dashboard/BusOwnerComponent/AllBusList/AllBusList";
 import LoadingLayout from "../Loyout/LoadingLayout/LoadingLayout";
 import PendingBus from "../Dashboard/Admin/PendingBus/PendingBus";
@@ -19,6 +19,10 @@ import PaymentSuccess from "../Pages/PaymentSuccess/PaymentSuccess";
 import PaymentFailed from "../Pages/PaymentFailed/PaymentFailed";
 
 import Invoice from "../Pages/Invoice/Invoice";
+
+import PrivateRoute from "../Loyout/PrivateRoute/PrivateRoute";
+import AdminPrivateRoute from "../Loyout/PrivateRoute/AdminPrivateRoute";
+import BusOperatorPrivateRoute from "../Loyout/PrivateRoute/BusOperatorPrivateRoute";
 const router = createBrowserRouter([
 	{
 		path: "/",
@@ -45,22 +49,21 @@ const router = createBrowserRouter([
 				element: <SignIn />,
 			},
 			{
-				path: '/booking-bus-trip-info',
-				element: <TicketProcessing />
+				path: "/booking-bus-trip-info",
+				element: <TicketProcessing />,
 			},
 			{
-				path: '/payment-successfull/:tarn',
-				element: <PaymentSuccess />
+				path: "/payment-successfull/:tran_id",
+				element: <PaymentSuccess />,
 			},
 			{
-				path: '/invoice',
-				element: <Invoice />
+				path: "/invoice/:tran_id",
+				element: <Invoice />,
 			},
 			{
-				path: '/payment-failed',
-				element: <PaymentFailed />
+				path: "/payment-failed",
+				element: <PaymentFailed />,
 			},
-			
 		],
 	},
 
@@ -78,19 +81,35 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "/dashboard/add-bus-sedule",
-				element: <AddBusSedule />,
+				element: (
+					<AdminPrivateRoute>
+						<AddBusSedule />
+					</AdminPrivateRoute>
+				),
 			},
 			{
 				path: "/dashboard/add-bus-on-road",
-				element: <AddBusOnRoad />,
+				element: (
+					<BusOperatorPrivateRoute>
+						<AddBusOnRoad />
+					</BusOperatorPrivateRoute>
+				),
 			},
 			{
 				path: "/dashboard/all-bus-list",
-				element: <AllBusList />,
+				element: (
+					<BusOperatorPrivateRoute>
+						<AllBusList />
+					</BusOperatorPrivateRoute>
+				),
 			},
 			{
 				path: "/dashboard/pending-bus",
-				element: <PendingBus />,
+				element: (
+					<AdminPrivateRoute>
+						<PendingBus />
+					</AdminPrivateRoute>
+				),
 			},
 		],
 	},

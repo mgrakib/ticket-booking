@@ -10,11 +10,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const TopNavBar = () => {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isSingUpOpen, setIsSingUpOpen] = useState(false);
+	const [isSingInOpen, setIsSingInOpen] = useState(false);
 	return (
 		<div
 			onClick={() => {
-				setIsOpen(false);
+				setIsSingInOpen(false);
+				setIsSingUpOpen(false);
 			}}
 			className=' text-[13px] py-2'
 		>
@@ -33,18 +35,46 @@ const TopNavBar = () => {
 						</div>
 					</div>
 
-					{/* sing up  */}
+					{/* sing up  sing in */}
 					<div className='flex items-center gap-5'>
 						<div className='flex items-center gap-5 border border-gray-200 px-2 py-1 relative'>
-							<div className='flex items-center gap-1 '>
-								<IoLogIn className='text-[#0E9E4D] text-xl ' />{" "}
-								Sing In
-							</div>
-
+							{/* sing in */}
 							<div
 								onClick={event => {
 									event.stopPropagation();
-									setIsOpen(!isOpen);
+									setIsSingInOpen(!isSingInOpen);
+									setIsSingUpOpen(false);
+								}}
+								className='flex items-center gap-1 cursor-pointer'
+							>
+								<IoLogIn className='text-[#0E9E4D] text-xl ' />{" "}
+								<p>Sing In</p>
+								<div
+									className={`absolute bg-white shadow-[0px_1px_5px_rgba(0,0,0,.5)] top-[110%] -left-1 z-50 rounded-md duration-300 ${
+										isSingInOpen
+											? "max-h-[120px] duration-300"
+											: "max-h-0"
+									} overflow-hidden`}
+								>
+									<Link to={"/singin/admin"}>
+										<div className=' px-4 py-2 cursor-pointer'>
+											Admin Sing In
+										</div>
+									</Link>
+									<Link to={"/singin/busOperator"}>
+										<div className=' px-4 py-2 cursor-pointer'>
+											Bus Oparator Sing In
+										</div>
+									</Link>
+								</div>
+							</div>
+
+							{/* singup  */}
+							<div
+								onClick={event => {
+									event.stopPropagation();
+									setIsSingInOpen(false);
+									setIsSingUpOpen(!isSingUpOpen);
 								}}
 								className='flex items-center gap-1 cursor-pointer'
 							>
@@ -52,17 +82,11 @@ const TopNavBar = () => {
 								<p>Sing Up</p>
 								<div
 									className={`absolute bg-white shadow-[0px_1px_5px_rgba(0,0,0,.5)] top-[110%] -right-1 z-50 rounded-md duration-300 ${
-										isOpen
+										isSingUpOpen
 											? "max-h-[120px] duration-300"
 											: "max-h-0"
 									} overflow-hidden`}
 								>
-									<Link to={"/signup/user"}>
-										<div className=' px-4 py-2 cursor-pointer'>
-											User Sing Up
-										</div>
-									</Link>
-
 									<Link to={"/signup/busOperator"}>
 										<div className=' px-4 py-2 cursor-pointer'>
 											Bus Oparator Sing Up

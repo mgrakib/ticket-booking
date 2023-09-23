@@ -48,6 +48,8 @@ const PrivateRoute = ({ children }) => {
 
 	}, [userInfo, dispatch]);
 
+
+
 	if (isLoading) {
 		return <Loading />;
 	}

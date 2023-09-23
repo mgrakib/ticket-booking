@@ -71,14 +71,37 @@ export const baseAPI = createApi({
 			}),
 		}),
 		postOrderPayment: builder.mutation({
-			query: (body) => ({
-				
+			query: body => ({
 				url: `/order`,
-				method: 'POST',
-				body
+				method: "POST",
+				body,
+			}),
+		}),
+		getPaymentRecept: builder.query({
+			query: tran_id => ({
+				url: `/get-payment-history?tran_id=${tran_id}`,
+			}),
+		}),
+		getBusStationName: builder.query({
+			query: () => ({
+				url: `/get-bus-station`,
 			}),
 		}),
 	}),
 });
 
-export const { useGetBusListQuery, useGetBusOperatorsQuery, useGetBusNumbersQuery, useUpdateBusOnSeduleMutation, useAddNewBusMutation, useGetUserQuery, useGetBusOwnerBusListQuery, useAcceptBusRequestMutation, useGetAllBusByStatusQuery, useGetSelectBusToProcessTicketQuery, usePostOrderPaymentMutation } = baseAPI;
+export const {
+	useGetBusListQuery,
+	useGetBusOperatorsQuery,
+	useGetBusNumbersQuery,
+	useUpdateBusOnSeduleMutation,
+	useAddNewBusMutation,
+	useGetUserQuery,
+	useGetBusOwnerBusListQuery,
+	useAcceptBusRequestMutation,
+	useGetAllBusByStatusQuery,
+	useGetSelectBusToProcessTicketQuery,
+	usePostOrderPaymentMutation,
+	useGetPaymentReceptQuery,
+	useGetBusStationNameQuery,
+} = baseAPI;

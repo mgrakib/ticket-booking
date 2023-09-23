@@ -9,11 +9,17 @@ import Container from "../../Container/Container";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 const HeroSection = () => {
 	const [fromCity, setFromCity] = useState(null)
 	const [toCity, setToCity] = useState(null)
 	const [doj, setDoj] = useState(null)
 
+	const { busStationName: stationsName } = useSelector(
+		state => state?.busStationNameSlice
+	);
+
+	
 	return (
 		<div className='cityBannar pt-2 md:pt-8 pb-20 md:pb-16 relative'>
 			<Container>
@@ -61,21 +67,19 @@ const HeroSection = () => {
 												>
 													Pickup Point
 												</option>
-												<option value='Dhaka'>
-													Dhaka
-												</option>
-												<option value='Kushtia'>
-													Kushtia
-												</option>
-												<option value='Barishal'>
-													Barishal
-												</option>
-												<option value='Patuakhali'>
-													Patuakhali
-												</option>
-												<option value='Jessore'>
-													Jessore
-												</option>
+
+												{stationsName.map(
+													(station, index) => {
+														return (
+															<option
+																key={index}
+																value={station}
+															>
+																{station}
+															</option>
+														);
+													}
+												)}
 											</select>
 										</div>
 									</div>
@@ -99,21 +103,18 @@ const HeroSection = () => {
 												>
 													Dropping Point
 												</option>
-												<option value='Dhaka'>
-													Dhaka
-												</option>
-												<option value='Kushtia'>
-													Kushtia
-												</option>
-												<option value='Barishal'>
-													Barishal
-												</option>
-												<option value='Patuakhali'>
-													Patuakhali
-												</option>
-												<option value='Jessore'>
-													Jessore
-												</option>
+												{stationsName.map(
+													(station, index) => {
+														return (
+															<option
+																key={index}
+																value={station}
+															>
+																{station}
+															</option>
+														);
+													}
+												)}
 											</select>
 										</div>
 									</div>
@@ -140,7 +141,9 @@ const HeroSection = () => {
 
 								<div className='flex items-center justify-center'>
 									{fromCity && toCity && doj ? (
-										<Link to={`/bus/search?fromCity=${fromCity}&toCity=${toCity}&doj=${doj}`}>
+										<Link
+											to={`/bus/search?fromCity=${fromCity}&toCity=${toCity}&doj=${doj}`}
+										>
 											<Button
 												variant='contained'
 												style={{
