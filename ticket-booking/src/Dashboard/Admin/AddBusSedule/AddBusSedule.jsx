@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 const AddBusSedule = () => {
 	const [journeyDate, setJourneyDate] = useState(null);
 	const [busOperatorName, setBusOperatorName] = useState(null);
-const { busStationName: stationsName } = useSelector(
+const { busStationName: stationsName =[] } = useSelector(
 	state => state?.busStationNameSlice
 );
 	const { data: busOperator } = useGetBusOperatorsQuery();
@@ -226,7 +226,7 @@ const { busStationName: stationsName } = useSelector(
 											Starting Point
 										</option>
 
-										{stationsName.map((station, index) => {
+										{stationsName?.map((station, index) => {
 											return (
 												<option
 													key={index}
@@ -273,7 +273,7 @@ const { busStationName: stationsName } = useSelector(
 											Ending Point
 										</option>
 
-										{stationsName.map((station, index) => {
+										{stationsName?.map((station, index) => {
 											return (
 												<option
 													key={index}

@@ -352,7 +352,7 @@ const Invoice = () => {
 					</div>
 
 					{/* paid sile  */}
-					<div className='w-[100px] absolute left-16 bottom-36'>
+					<div className='w-[100px] absolute left-16 bottom-40'>
 						{/* ractiangular  */}
 						{/* <img
 						src='https://i.ibb.co/F5KMkRx/image.png'

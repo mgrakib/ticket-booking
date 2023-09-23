@@ -2,10 +2,12 @@ import { Button } from "@mui/material";
 import Container from "../../Components/Container/Container";
 import { Link, useParams } from "react-router-dom";
 import Invoice from "../Invoice/Invoice";
+import { useGetPaymentReceptQuery } from "../../redux/features/api/baseAPI";
 
 
 const PaymentSuccess = () => {
 	const { tran_id } = useParams();
+	const {data: paymentHistory} = useGetPaymentReceptQuery(tran_id);
 
     return (
 		<div className='py-5 w-full '>
@@ -33,19 +35,21 @@ const PaymentSuccess = () => {
 								<div className='flex items-center justify-between font-semibold'>
 									<p className='text-gray-500'>Mobile</p>
 									<p className='text-gray-900'>
-										+8801811115794
+										{paymentHistory?.mobileNum}
 									</p>
 								</div>
 								<div className='flex items-center justify-between font-semibold'>
 									<p className='text-gray-500'>Email</p>
 									<p className='text-gray-900'>
-										mgrakibbd@gmail.com
+										{paymentHistory?.email}
 									</p>
 								</div>
 								<div className='flex items-center justify-between font-semibold my-2'>
 									<p className='text-gray-500'>Amount Paid</p>
 									<p className='text-gray-900 text-[17px] font-bold'>
-										500.00
+										{parseFloat(
+											paymentHistory?.totalAmount
+										).toFixed(2)}
 									</p>
 								</div>
 								<div className='flex items-center justify-between font-semibold'>

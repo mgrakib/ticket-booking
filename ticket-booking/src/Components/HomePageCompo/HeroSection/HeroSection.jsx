@@ -15,7 +15,7 @@ const HeroSection = () => {
 	const [toCity, setToCity] = useState(null)
 	const [doj, setDoj] = useState(null)
 
-	const { busStationName: stationsName } = useSelector(
+	const { busStationName: stationsName=[] } = useSelector(
 		state => state?.busStationNameSlice
 	);
 
@@ -68,7 +68,7 @@ const HeroSection = () => {
 													Pickup Point
 												</option>
 
-												{stationsName.map(
+												{stationsName?.map(
 													(station, index) => {
 														return (
 															<option
@@ -103,7 +103,7 @@ const HeroSection = () => {
 												>
 													Dropping Point
 												</option>
-												{stationsName.map(
+												{stationsName?.map(
 													(station, index) => {
 														return (
 															<option
