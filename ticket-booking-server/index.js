@@ -50,6 +50,9 @@ async function run() {
 		const paymentCollection = client
 			.db("e-Ticket_booking")
 			.collection("payment");
+		const busStationName = client
+			.db("e-Ticket_booking")
+			.collection("busStationName");
 
 		app.get("/on_going_bus", async (req, res) => {
 			const fromCity = req.query.fromCity;
@@ -516,6 +519,20 @@ async function run() {
 			const paymentHistory = await paymentCollection.findOne({tran_id});
 			res.send(paymentHistory);
 		})
+
+		app.get('/get-bus-station', async (req, res) => {
+			const result = await busStationName
+				.find({ busStationName: true })
+				.toArray();
+			
+			const stationName = result?.[0]?.districts;
+
+			console.log(stationName, ' jklasf')
+			res.send(stationName);
+		})
+
+
+
 		// Send a ping to confirm a successful connection
 		await client.db("admin").command({ ping: 1 });
 		console.log(
