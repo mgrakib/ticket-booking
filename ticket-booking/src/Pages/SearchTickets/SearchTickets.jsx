@@ -65,11 +65,11 @@ const SearchTickets = () => {
 			<div className='bg-[#F7F7F7]'>
 				<Container>
 					<div className='flex py-5 gap-10'>
-						<div className='w-[25%] bg-white'>
+						<div className='hidden md:block w-[25%] bg-white'>
 							<FiltersSection />
 						</div>
 
-						<div className='w-[75%] '>
+						<div className='  md:w-[75%] '>
 							<ShowAllTickets
 								targetedTickets={targetedTickets}
 								isTicketLoading={isTicketLoading}

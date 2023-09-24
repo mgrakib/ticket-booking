@@ -56,7 +56,7 @@ const NavBar = ({ navDrowerIsOpen, setNavDrowerIsOpen }) => {
 		// TODO: Make nav link for mobile
 		<div
 			id='header'
-			className=' w-full z-50 bg-white  border-b border-gray-200 py-2  duration-700 relative'
+			className=' w-full z-50 bg-white  border-b border-gray-200 py-2  duration-700 '
 		>
 			<Container>
 				<div className='flex items-center justify-between'>
@@ -148,7 +148,7 @@ const NavBar = ({ navDrowerIsOpen, setNavDrowerIsOpen }) => {
 						))}
 					</div>
 
-					<div className="mt-5">
+					<div className="mt-5 relative z-999">
 						<TopNavBar />
 					</div>
 				</div>

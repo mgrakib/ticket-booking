@@ -70,14 +70,14 @@ const SeatsInfo = ({
 			</p>
 
 			<div className='mt-2 pt-2 border-t border-gray-400'>
-				<div className='flex gap-10'>
-					<div className='w-[50%]'>
+				<div className='flex flex-col md:flex-row gap-5 md:gap-10'>
+					<div className='w-full md:w-[50%]'>
 						<p className='text-[13px]'>
 							Hold the cursor on seats for seat numbers, click to
 							select or deselect.
 						</p>
 
-						<div className='w-[50%]  p-7 mx-auto mt-4 border border-gray-400'>
+						<div className='w-[70%] md:w-[50%]  p-7 mx-auto mt-4 border border-gray-400 rounded'>
 							{/* driver  */}
 							<div className=''>
 								<div
@@ -387,7 +387,7 @@ const SeatsInfo = ({
 					</div>
 
 					{/* selects seats  */}
-					<div className='w-[50%]'>
+					<div className='w-full md:w-[50%]'>
 						{/* select sets title  */}
 						<div className='flex justify-between items-center'>
 							<div className='flex items-center gap-3'>
@@ -427,7 +427,7 @@ const SeatsInfo = ({
 								</div>
 							</div>
 
-							<div className='mt-3 text-[13px] min-h-[180px]'>
+							<div className='mt-3 text-[13px]  md:min-h-[180px] '>
 								{selectBusNumber === busNumber &&
 									selectedSeats?.map(ticket => (
 										<div

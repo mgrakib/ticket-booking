@@ -29,8 +29,8 @@ const PendingBus = () => {
 			<div className=''>
 				<p className='text-3xl text-gray-800 font-bold'>Bus List</p>
 
-				<div className='flex items-center mt-5 gap-5'>
-					<div className='shadow-[0px_0px_5px_#00FE6981] py-2 px-3 rounded-md min-w-[100px] flex items-center gap-3  cursor-pointer'>
+				<div className='flex flex-col md:flex-row items-center mt-5 gap-5'>
+					<div className='shadow-[0px_0px_5px_#00FE6981] py-2 px-3 rounded-md w-full md:min-w-[100px] flex items-center gap-3  cursor-pointer'>
 						<div className='w-[40px] h-[40px] bg-red-100  rounded-full flex items-center justify-center'>
 							<FaBus />
 						</div>
@@ -43,7 +43,7 @@ const PendingBus = () => {
 							</p>
 						</div>
 					</div>
-					<div className='shadow-[0px_0px_5px_#00FE6981] py-2 px-3 rounded-md min-w-[100px] flex items-center gap-3  cursor-pointer'>
+					<div className='shadow-[0px_0px_5px_#00FE6981] py-2 px-3 rounded-md w-full md:min-w-[100px] flex items-center gap-3  cursor-pointer'>
 						<div className='w-[40px] h-[40px] bg-red-100  rounded-full flex items-center justify-center'>
 							<FaBus />
 						</div>
@@ -56,7 +56,7 @@ const PendingBus = () => {
 							</p>
 						</div>
 					</div>
-					<div className='shadow-[0px_0px_5px_#00FE6981] py-2 px-3 rounded-md min-w-[100px] flex items-center gap-3  cursor-pointer'>
+					<div className='shadow-[0px_0px_5px_#00FE6981] py-2 px-3 rounded-md w-full md:min-w-[100px] flex items-center gap-3  cursor-pointer'>
 						<div className='w-[40px] h-[40px] bg-red-100  rounded-full flex items-center justify-center'>
 							<MdBusAlert className='text-red-500' />
 						</div>
@@ -108,20 +108,20 @@ const PendingBus = () => {
 
 									return (
 										<tr key={_id}>
-											<td className='w-[5%]'>{i + 1}</td>
-											<td className='w-[10%]'>
+											<td className='py-2 w-[5%]'>{i + 1}</td>
+											<td className='py-2 w-[10%]'>
 												{busNumber}
 											</td>
-											<td className='w-[17%]'>
+											<td className='py-2 w-[17%]'>
 												{busOperatorName}
 											</td>
-											<td className='w-[10%]'>
+											<td className='py-2 w-[10%]'>
 												{businessReg}
 											</td>
-											<td className='w-[10%]'>
+											<td className='py-2 w-[10%]'>
 												{isAC ? "AC" : "N-AC"}
 											</td>
-											<td className='w-[10%]'>
+											<td className='py-2 w-[10%]'>
 												<div
 													className={`${
 														isApproved
@@ -134,12 +134,12 @@ const PendingBus = () => {
 														: "Pending"}
 												</div>
 											</td>
-											<td className='w-[10%]'>{rent}</td>
-											<td className='w-[5%]  '>
+											<td className='py-2 w-[10%]'>{rent}</td>
+											<td className='py-2 w-[5%]  '>
 												{totalSits}
 											</td>
-											<td className='w-[15%]'>{route}</td>
-											<td className='w-[8%]'>
+											<td className='py-2 w-[15%]'>{route}</td>
+											<td className='py-2 w-[8%]'>
 												<Button
 													onClick={() =>
 														handelAccept(_id)

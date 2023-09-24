@@ -12,6 +12,7 @@ import { ImSpinner8 } from "react-icons/im";
 import Processing from "../../../Components/Processing/Processing";
 import toast, { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { Button } from "@mui/material";
 
 const AddBusSedule = () => {
 	const [journeyDate, setJourneyDate] = useState("");
@@ -88,7 +89,7 @@ const AddBusSedule = () => {
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<div className='flex flex-col gap-3'>
 						{/* journyDate */}
-						<div className='mt-2 text-[14px] grid grid-cols-3 gap-10 '>
+						<div className='mt-2 text-[14px] grid md:grid-cols-3 gap-10 '>
 							{/*Date*/}
 							<div className='col-span-1 flex flex-col items-start'>
 								<label
@@ -120,7 +121,7 @@ const AddBusSedule = () => {
 							</div>
 						</div>
 						{/* bus operator name and bus number */}
-						<div className='mt-2 text-[14px] grid grid-cols-3 gap-10 '>
+						<div className='mt-2 text-[14px] grid md:grid-cols-3 md:gap-10 gap-5'>
 							{/* bus operator  */}
 							<div className='col-span-1 flex flex-col items-start'>
 								<label
@@ -218,7 +219,7 @@ const AddBusSedule = () => {
 						</div>
 
 						{/* dastination area and time  */}
-						<div className='mt-2 text-[14px] grid grid-cols-3 gap-10 '>
+						<div className='mt-2 text-[14px] grid md:grid-cols-3 gap-5 md:gap-10 '>
 							{/* Starting Point  */}
 							<div className='col-span-1 flex flex-col items-start'>
 								<label
@@ -315,7 +316,7 @@ const AddBusSedule = () => {
 						</div>
 
 						{/* startingTime and araiveTime */}
-						<div className='mt-2 text-[14px] grid grid-cols-3 gap-10 '>
+						<div className='mt-2 text-[14px] grid md:grid-cols-3 md:gap-10 gap-5'>
 							{/* startingTime */}
 							<div className='col-span-1 flex flex-col items-start'>
 								<label
@@ -406,13 +407,13 @@ const AddBusSedule = () => {
 							</div>
 						</div>
 					</div>
-					<div className='mt-5'>
-						<button
+					<div className='mt-5 grid grid-cols-1'>
+						<Button
 							type='submit'
-							className='py-1 px-4 bg-[#55BDB8] rounded-lg text-white'
+							className='py-1 w-full px-4 bg-[#55BDB8] rounded-lg text-white'
 						>
 							Proced to set Bus Sedule
-						</button>
+						</Button>
 					</div>
 				</form>
 			</div>

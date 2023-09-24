@@ -23,11 +23,11 @@ function App() {
 			{routeName !== "signup" && routeName !== "singin" && (
 				// dextop
 				<div className=' relative z-40'>
-					<div className='hidden md:block border-b border-gray-200'>
+					<div className='hidden md:block border-b border-gray-200 z-999'>
 						<TopNavBar />
 					</div>
 
-					<div className='relative '>
+					<div className='relative z-989 '>
 						<NavBar
 							navDrowerIsOpen={navDrowerIsOpen}
 							setNavDrowerIsOpen={setNavDrowerIsOpen}

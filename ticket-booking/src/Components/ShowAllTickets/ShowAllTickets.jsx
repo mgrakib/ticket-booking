@@ -38,16 +38,18 @@ const ShowAllTickets = ({ targetedTickets, isTicketLoading }) => {
 		<div className=''>
 			<div>
 				<div>
-					<div className='flex '>
+					<div className='flex gap-x-2 justify-between'>
 						<div className='w-[40%]'>Operator (Bus Type)</div>
 						<div className='w-[15%]'>Dep. Time</div>
 						<div className='w-[15%]'>Arr. Time</div>
-						<div className='w-[15%]'>Seats Available</div>
+						<div className='w-[15%] '>Seats Available</div>
 						<div className='w-[15%]'>Fare</div>
 					</div>
 
 					<div className='h-full'>
-						{isTicketLoading ?  <DataFetcingLoading /> : targetedTickets?.length > 0 ? (
+						{isTicketLoading ? (
+							<DataFetcingLoading />
+						) : targetedTickets?.length > 0 ? (
 							targetedTickets?.map(ticket => {
 								const {
 									busOperatorName,
@@ -68,11 +70,11 @@ const ShowAllTickets = ({ targetedTickets, isTicketLoading }) => {
 								return (
 									<div
 										key={ticket._id}
-										className='bg-white rounded mt-4 p-3'
+										className=' rounded mt-4 py-3 '
 									>
-										<div className=' flex'>
+										<div className=' flex gap-x-2 justify-between '>
 											{/* bus name  */}
-											<div className=' pr-10 w-[40%]'>
+											<div className='w-[40%]'>
 												<div className='flex flex-col gap-2'>
 													<h2 className='text-lg font-bold text-[#219051]'>
 														{busOperatorName}
@@ -112,7 +114,7 @@ const ShowAllTickets = ({ targetedTickets, isTicketLoading }) => {
 													</div>
 												</div>
 											</div>
-											<div className='p-3 w-[15%]'>
+											<div className='w-[15%]'>
 												<p>
 													{moment(
 														startingTime,
@@ -120,7 +122,7 @@ const ShowAllTickets = ({ targetedTickets, isTicketLoading }) => {
 													).format("h:mm a")}
 												</p>
 											</div>
-											<div className='p-3 w-[15%]'>
+											<div className='w-[15%]'>
 												<p>
 													{moment(
 														araiveTime,
@@ -128,13 +130,13 @@ const ShowAllTickets = ({ targetedTickets, isTicketLoading }) => {
 													).format("h:mm a")}
 												</p>
 											</div>
-											<div className='p-3 w-[15%]'>
+											<div className=' w-[15%]'>
 												<p className='text-[#219051]'>
 													{totalSits - bookedSits}
 												</p>
 											</div>
-											<div className='p-3 w-[15%] '>
-												<div className='flex h-full flex-col justify-between'>
+											<div className='w-[15%] pr-2'>
+												<div className='flex h-full flex-col justify-between '>
 													<p className='text-2xl font-semibold text-[#219051]'>
 														৳ <span>{rent}</span>
 													</p>
@@ -152,7 +154,7 @@ const ShowAllTickets = ({ targetedTickets, isTicketLoading }) => {
 															);
 														}}
 														variant='contained'
-														className='py-[6px] px-1 bg-[#219051] rounded text-white'
+														className='py-[6px] px-1 bg-[#219051] w-full rounded text-white text-[10px] md:text-[14px]'
 													>
 														View Seats
 													</Button>
@@ -160,11 +162,11 @@ const ShowAllTickets = ({ targetedTickets, isTicketLoading }) => {
 											</div>
 										</div>
 
-										<div className='py-2'>
+										<div className='py-2  overflow-x-hidden  mt-5'>
 											<div
 												className={` overflow-hidden ${
 													rowId === _id
-														? "max-h-[650px]"
+														? "md:max-h-[650px]"
 														: "max-h-[0px] "
 												}`}
 											>
@@ -201,9 +203,7 @@ const ShowAllTickets = ({ targetedTickets, isTicketLoading }) => {
 									className='w-[50%] mx-auto'
 								/>
 							</div>
-						)} 
-						
-						
+						)}
 					</div>
 				</div>
 			</div>

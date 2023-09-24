@@ -86,7 +86,7 @@ const AddBusOnRoad = () => {
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<div className='flex flex-col gap-3'>
 						{/* dastination area and time  */}
-						<div className='mt-2 text-[14px] grid grid-cols-3 gap-10 '>
+						<div className='mt-2 text-[14px] grid md:grid-cols-3 md:gap-10 gap-5 '>
 							{/* Starting Point  */}
 							<div className='col-span-1 flex flex-col items-start'>
 								<label
@@ -147,8 +147,8 @@ const AddBusOnRoad = () => {
 									Air Conditioner or Non Air Condition
 								</label>
 
-								<div className='border py-[6px] px-2 rounded w-full flex items-center gap-10'>
-									<div className='flex items-end gap-2'>
+								<div className='border py-[6px] px-2 rounded w-full flex items-center justify-between md:gap-10'>
+									<div className='flex  gap-1 items-center md:gap-2'>
 										<Checkbox
 											checked={isAC}
 											{...label}
@@ -163,7 +163,7 @@ const AddBusOnRoad = () => {
 											Air Conditioner
 										</label>
 									</div>
-									<div className='flex items-end gap-2'>
+									<div className='flex items-center gap-2'>
 										<Checkbox
 											checked={isNAC}
 											{...label}
@@ -183,7 +183,7 @@ const AddBusOnRoad = () => {
 						</div>
 
 						{/* route and araiveTime */}
-						<div className='mt-2 text-[14px] grid grid-cols-3 gap-10 '>
+						<div className='mt-2 text-[14px] grid md:grid-cols-3 md:gap-10 gap-5 '>
 							{/* route */}
 							<div className='col-span-1 flex flex-col items-start'>
 								<label
@@ -281,7 +281,7 @@ const AddBusOnRoad = () => {
 					<div className='mt-5'>
 						<Button
 							type='submit'
-							className='py-1 px-4 bg-[#55BDB8] rounded-lg text-white'
+							className='w-full py-1 px-4 bg-[#55BDB8] rounded-lg text-white'
 						>
 							Proced to Add New Bus
 						</Button>
