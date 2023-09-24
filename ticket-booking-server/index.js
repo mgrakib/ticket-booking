@@ -536,9 +536,12 @@ async function run() {
 			const invoiceNumber = req.query.invoiceNumber;
 			const passengerMobileNo = req.query.passengerMobileNo;
 
+			console.log(invoiceNumber, passengerMobileNo)
 			const paymentHistory = await paymentCollection.findOne({
 				$and: [{ invoiceNumber }, { passengerMobileNo }],
 			});
+
+			console.log(paymentHistory);
 			res.send(paymentHistory);
 		});
 		
