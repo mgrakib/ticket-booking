@@ -8,27 +8,27 @@ import { Link } from "react-router-dom";
 
 const InvoiceShow = () => {
     const [infoForTicket, setInfoForTicket] = useState({
-        invoiceNumber: "",
-        mobileNum: "",
-    });
+		invoiceNumber: "",
+		passengerMobileNo: "",
+	});
     const { data: ticketInfo, isLoading } = useFindTicketQuery({ ...infoForTicket });
 
     const handelFindTicket = (event) => {
         event.preventDefault()
         const form = event?.target;
-        const mobile = form?.mobile?.value;
+        const passengerMobileNo = form?.passengerMobileNo?.value;
         const invoice = form?.invoice?.value;
        setInfoForTicket(prev => ({
 			...prev,
 			invoiceNumber: invoice,
-			mobileNum: mobile,
+			passengerMobileNo
 		}));
 
         
 
     }
 
-    
+	
     
     const {
 		invoiceNumber,
@@ -79,12 +79,14 @@ const InvoiceShow = () => {
 								</div>
 
 								<div className='flex flex-col'>
-									<label htmlFor='mobile'>Mobile *</label>
+									<label htmlFor='passengerMobileNo'>
+										Mobile *
+									</label>
 									<div className=' bg-white border border-gray-400 rounded-md overflow-hidden'>
 										<input
 											type='text'
-											id='mobile'
-											name='mobile'
+											id='passengerMobileNo'
+											name='passengerMobileNo'
 											className='py-1 px-3  bg-transparent outline-none w-full neumorphism-input-field'
 											placeholder='Mobile Number'
 										/>

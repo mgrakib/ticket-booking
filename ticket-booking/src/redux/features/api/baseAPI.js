@@ -88,8 +88,8 @@ export const baseAPI = createApi({
 			}),
 		}),
 		findTicket: builder.query({
-			query: ({ invoiceNumber, mobileNum }) => ({
-				url: `payment-history-by-invoice_mobile?invoiceNumber=${invoiceNumber}&mobileNum=${mobileNum}`,
+			query: ({ invoiceNumber, passengerMobileNo }) => ({
+				url: `payment-history-by-invoice_mobile?invoiceNumber=${invoiceNumber}&passengerMobileNo=${passengerMobileNo}`,
 			}),
 		}),
 	}),

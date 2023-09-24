@@ -97,12 +97,12 @@ const PaymentSuccess = () => {
 										</p>
 									)}
 								</div>
-								<div className='text-[14px] text-start mt-2 text-red-500 '>
+								<div className='text-[13px] text-start mt-2 text-red-500 '>
 									<p>
 										NB:{" "}
 										<span>
 											"Memorize or save your phone and
-											invoice numbers
+											invoice numbers to download your Ticket after"
 										</span>
 									</p>
 								</div>

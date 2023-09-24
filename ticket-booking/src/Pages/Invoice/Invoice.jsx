@@ -2,8 +2,7 @@
 
 import "./Invoice.css";
 import logo from "../../../public/logo.png";
-import paid from '../../assets/paid.png'
-
+import paid from "../../assets/paid.png";
 
 import { useRef } from "react";
 import html2canvas from "html2canvas";
@@ -14,14 +13,12 @@ import { useGetPaymentReceptQuery } from "../../redux/features/api/baseAPI";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 
-
 const Invoice = () => {
 	const { tran_id } = useParams();
 
-	const { data: paymentHistory={}, isLoading } =
+	const { data: paymentHistory = {}, isLoading } =
 		useGetPaymentReceptQuery(tran_id);
 
-	
 	const pdfRef = useRef();
 	const downloadBtn = () => {
 		const input = pdfRef.current;
@@ -49,10 +46,10 @@ const Invoice = () => {
 	};
 	const {
 		busOperatorName,
-		
-busNumber,
 
-		email,
+		busNumber,
+
+		passengerEmail,
 		journeyDate,
 		passengerMobileNo,
 		passengerInfo,
@@ -63,8 +60,10 @@ busNumber,
 		invoiceNumber,
 		startingPoint,
 		startingTime,
+		busOperatorAddress,
+		busOperatorEmail,
+		busOperatorPhoneNumber,
 	} = paymentHistory || {};
-
 
 	console.log(paymentHistory);
 	return (
@@ -133,7 +132,7 @@ busNumber,
 										</p>
 
 										<p>{passengerMobileNo}</p>
-										<p>{email}</p>
+										<p>{passengerEmail}</p>
 									</div>
 								</div>
 								<div className='text-right'>
@@ -141,9 +140,9 @@ busNumber,
 										{busOperatorName}
 									</p>
 									<div className='text-[12px] text-gray-500'>
-										<p>450 E 96th St, United States</p>
-										<p>+153 5463 2548</p>
-										<p>info@Greenlineexpress.com</p>
+										<p className="max-w-[200px]">{ busOperatorAddress}</p>
+										<p>{ busOperatorPhoneNumber}</p>
+										<p>{ busOperatorEmail}</p>
 									</div>
 								</div>
 							</div>
