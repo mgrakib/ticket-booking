@@ -50,9 +50,7 @@ async function run() {
 		const paymentCollection = client
 			.db("e-Ticket_booking")
 			.collection("payment");
-		const busStationName = client
-			.db("e-Ticket_booking")
-			.collection("busStationName");
+	
 
 		app.get("/on_going_bus", async (req, res) => {
 			const fromCity = req.query.fromCity;
@@ -166,6 +164,7 @@ async function run() {
 				busNumber: busInfo?.busNumber,
 			});
 
+
 			const newBusSedule = {
 				...busInfo,
 				...Object.entries(extraInfo).reduce((acc, [key, value]) => {
@@ -198,6 +197,14 @@ async function run() {
 
 		app.post("/add-new-bus", async (req, res) => {
 			const body = req.body;
+			const userInfo = await userCollection.findOne({
+				$and: [
+					{ busOperatorName: body?.busOperatorName },
+					{
+						businessReg: body?.businessReg,
+					},
+				],
+			});
 			const isExistBus = await allBusInfoCollections.findOne({
 				$and: [
 					{ busNumber: body?.busNumber }, // Check if busNumber matches
@@ -212,6 +219,8 @@ async function run() {
 			} else {
 				const insertNewBus = await allBusInfoCollections.insertOne({
 					...body,
+					busOperatorPhoneNumber: userInfo?.busOperatorPhoneNumber,
+					busOperatorAddress: userInfo?.busOperatorAddress,
 					rent: parseInt(body.rent),
 					totalSits: parseInt(body.totalSits),
 					isApproved: false,
@@ -309,7 +318,8 @@ async function run() {
 				name,
 				businessReg,
 				busOperatorName,
-				phoneNumber,
+				busOperatorPhoneNumber,
+				busOperatorAddress,
 				role,
 			} = req.body;
 
@@ -335,7 +345,8 @@ async function run() {
 					name,
 					businessReg,
 					busOperatorName,
-					phoneNumber,
+					busOperatorPhoneNumber,
+					busOperatorAddress,
 					role,
 				});
 
@@ -354,7 +365,8 @@ async function run() {
 					name,
 					businessReg,
 					busOperatorName,
-					phoneNumber,
+					busOperatorPhoneNumber,
+					busOperatorAddress,
 					role,
 				});
 				const inserTBusOperator =
@@ -363,7 +375,7 @@ async function run() {
 						businessReg,
 					});
 
-				console.log("isExost true isBusOperatorExist true");
+				
 				res.send({ insertNewUser, inserTBusOperator });
 			}
 		});
@@ -379,8 +391,8 @@ async function run() {
 		app.post("/order", async (req, res) => {
 			const {
 				passengerInfo,
-				email,
-				mobileNum,
+				passengerEmail,
+				passengerMobileNo,
 				isSecure,
 				totalAmount,
 				startingPoint,
@@ -388,6 +400,9 @@ async function run() {
 				journeyDate,
 				startingTime,
 				busOperatorName,
+				busOperatorAddress,
+				busOperatorEmail,
+				busOperatorPhoneNumber,
 				isAC,
 				busNumber,
 				paymentDate,
@@ -408,14 +423,14 @@ async function run() {
 				product_category: "Electronic",
 				product_profile: "general",
 				cus_name: "Customer Name",
-				cus_email: email,
+				cus_email: passengerEmail,
 				cus_add1: "Dhaka",
 				cus_add2: "Dhaka",
 				cus_city: "Dhaka",
 				cus_state: "Dhaka",
 				cus_postcode: "1000",
 				cus_country: "Bangladesh",
-				cus_phone: mobileNum,
+				cus_phone: passengerMobileNo,
 				cus_fax: "01711111111",
 				ship_name: "Customer Name",
 				ship_add1: "Dhaka",
@@ -436,14 +451,12 @@ async function run() {
 				console.log(GatewayPageURL);
 				res.send({ url: GatewayPageURL });
 
-				
 				const finalPayment = {
-					
 					paid: false,
 					tran_id,
 					passengerInfo,
-					email,
-					mobileNum,
+					passengerEmail,
+					passengerMobileNo,
 					isSecure,
 					totalAmount,
 					startingPoint,
@@ -451,6 +464,9 @@ async function run() {
 					journeyDate,
 					startingTime,
 					busOperatorName,
+					busOperatorAddress,
+					busOperatorEmail,
+					busOperatorPhoneNumber,
 					isAC,
 					busNumber,
 					paymentDate,
@@ -461,7 +477,7 @@ async function run() {
 			app.post("/payment/success/:tran", async (req, res) => {
 				const getTotalNumberOfPayment =
 					await paymentCollection.countDocuments();
-				
+
 				const updateStatus = await paymentCollection.updateOne(
 					{ tran_id: req.params.tran },
 					{
@@ -474,10 +490,7 @@ async function run() {
 
 				const bookedSeats = passengerInfo.map(seat => seat.seat);
 
-
 				if (updateStatus.modifiedCount > 0) {
-					
-
 					const booking = await onGoingBusCollections.findOne({
 						busOperatorName,
 						journeyDate,
@@ -485,50 +498,57 @@ async function run() {
 					});
 
 					if (booking) {
-						booking.bookedSitsNumber = [...bookedSeats, ...booking.bookedSitsNumber];
+						booking.bookedSitsNumber = [
+							...bookedSeats,
+							...booking.bookedSitsNumber,
+						];
 					}
 
-					
 					await onGoingBusCollections.updateOne(
 						{ _id: booking._id },
 						{ $set: booking }
 					);
 
-					// TODO: change the mail link 
+					// TODO: change the mail link
 					res.redirect(
 						`http://localhost:5173/payment-successfull/${tran_id}`
 					);
 				}
 			});
 
-			app.post('/payment/failed/:tran', async (req, res) => {
+			app.post("/payment/failed/:tran", async (req, res) => {
 				const tran_id = req.params.tran;
-				const result  = await paymentCollection.deleteOne({
-					tran_id
-				})
+				const result = await paymentCollection.deleteOne({
+					tran_id,
+				});
 
 				res.redirect("http://localhost:5173/payment-failed");
-			})
-
-			
+			});
 		});
 
-
-		app.get('/get-payment-history', async (req, res) => {
+		app.get("/get-payment-history", async (req, res) => {
 			const tran_id = req.query.tran_id;
-			const paymentHistory = await paymentCollection.findOne({tran_id});
+			const paymentHistory = await paymentCollection.findOne({ tran_id });
 			res.send(paymentHistory);
-		})
+		});
 
-		app.get('/get-bus-station', async (req, res) => {
+		app.get("/payment-history-by-invoice_mobile", async (req, res) => {
+			const invoiceNumber = req.query.invoiceNumber;
+			const passengerMobileNo = req.query.passengerMobileNo;
+
+			const paymentHistory = await paymentCollection.findOne({
+				$and: [{ invoiceNumber }, { passengerMobileNo }],
+			});
+			res.send(paymentHistory);
+		});
+		
+		app.get("/get-bus-station", async (req, res) => {
 			const result = await busStationName
 				.find({ busStationName: true })
 				.toArray();
 			const stationName = result?.[0]?.districts;
 			res.send(stationName);
-		})
-
-
+		});
 
 		// Send a ping to confirm a successful connection
 		await client.db("admin").command({ ping: 1 });
