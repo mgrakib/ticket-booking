@@ -35,7 +35,11 @@ const DashboardSidBar = () => {
 			title: "All Bus List",
 			path: "/dashboard/all-bus-list",
 		},
-    ];
+		{
+			title: "Financial Report",
+			path: "/dashboard/financial-report",
+		},
+	];
     
 	const { busOperatorName, businessReg, email, name, role } = useSelector(
 		state => state.userSlice

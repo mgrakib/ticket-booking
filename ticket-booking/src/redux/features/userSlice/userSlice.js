@@ -14,7 +14,8 @@ export const createUser = createAsyncThunk(
 		name,
 		businessReg,
 		busOperatorName,
-		phoneNumber,
+		busOperatorPhoneNumber,
+		busOperatorAddress,
 		role,
 	}) => {
 		
@@ -28,12 +29,13 @@ export const createUser = createAsyncThunk(
 				name,
 				businessReg,
 				busOperatorName,
-				phoneNumber,
+				busOperatorPhoneNumber,
+				busOperatorAddress,
 				role,
 			}),
-        });
+		});
         const res =await setInDB.json()
-		console.log(res)
+		
         if (res.message !== "user already exist") {
             const currentUserData = await createUserWithEmailAndPassword(
 				auth,
@@ -112,7 +114,7 @@ const userSlice = createSlice({
 		},
 
 		toggleIsLoading: (state, { payload }) => {
-			console.log(payload)
+			
 			state.isLoading = payload
 		}
 	},

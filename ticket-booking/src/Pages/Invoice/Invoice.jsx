@@ -49,9 +49,12 @@ const Invoice = () => {
 	};
 	const {
 		busOperatorName,
+		
+busNumber,
+
 		email,
 		journeyDate,
-		mobileNum,
+		passengerMobileNo,
 		passengerInfo,
 		totalAmount,
 		paymentDate,
@@ -63,7 +66,7 @@ const Invoice = () => {
 	} = paymentHistory || {};
 
 
-	
+	console.log(paymentHistory);
 	return (
 		<div className='mt-5'>
 			<div
@@ -129,7 +132,7 @@ const Invoice = () => {
 											{passengerInfo?.[0]?.passengerName}
 										</p>
 
-										<p>{mobileNum}</p>
+										<p>{passengerMobileNo}</p>
 										<p>{email}</p>
 									</div>
 								</div>
@@ -282,6 +285,9 @@ const Invoice = () => {
 										<p className='font-bold'>Travels:</p>
 									</div>
 									<div className='flex-1'>
+										<p className='font-bold'>Bus Number:</p>
+									</div>
+									<div className='flex-1'>
 										<p className='font-bold'>Bus Type:</p>
 									</div>
 									<div className='w-[25%]'>
@@ -298,13 +304,16 @@ const Invoice = () => {
 									</div>
 									<div className='flex-1'>
 										<p className='text-[14px] '>
+											{busNumber}
+										</p>
+									</div>
+									<div className='flex-1'>
+										<p className='text-[14px] '>
 											{isAC ? "AC" : "N-AC"}
 										</p>
 									</div>
 									<div className='w-[25%]'>
-										<p className='text-[14px] '>
-											---
-										</p>
+										<p className='text-[14px] '>---</p>
 									</div>
 								</div>
 							</div>
@@ -359,6 +368,7 @@ const Invoice = () => {
 						alt=''
                     /> */}
 						{/* circle  */}
+
 						<img
 							src={paid}
 							alt=''

@@ -7,8 +7,9 @@ import { useGetPaymentReceptQuery } from "../../redux/features/api/baseAPI";
 
 const PaymentSuccess = () => {
 	const { tran_id } = useParams();
-	const {data: paymentHistory} = useGetPaymentReceptQuery(tran_id);
+	const {data: paymentHistory, isLoading:paymentInfoLoading} = useGetPaymentReceptQuery(tran_id);
 
+	
     return (
 		<div className='py-5 w-full '>
 			<Container>
@@ -34,29 +35,76 @@ const PaymentSuccess = () => {
 								</div>
 								<div className='flex items-center justify-between font-semibold'>
 									<p className='text-gray-500'>Mobile</p>
-									<p className='text-gray-900'>
-										{paymentHistory?.mobileNum}
-									</p>
+									{paymentInfoLoading ? (
+										<p className=' animate-pulse text-red-500'>
+											123456789
+										</p>
+									) : (
+										<p className=' text-red-500'>
+											{paymentHistory?.passengerMobileNo}
+										</p>
+									)}
 								</div>
 								<div className='flex items-center justify-between font-semibold'>
 									<p className='text-gray-500'>Email</p>
-									<p className='text-gray-900'>
-										{paymentHistory?.email}
-									</p>
+									{paymentInfoLoading ? (
+										<p className=' animate-pulse text-gray-900'>
+											example@gmail.com
+										</p>
+									) : (
+										<p className='text-gray-900'>
+											{paymentHistory?.passengerEmail}
+										</p>
+									)}
 								</div>
 								<div className='flex items-center justify-between font-semibold my-2'>
 									<p className='text-gray-500'>Amount Paid</p>
-									<p className='text-gray-900 text-[17px] font-bold'>
-										{parseFloat(
-											paymentHistory?.totalAmount
-										).toFixed(2)}
-									</p>
+									{paymentInfoLoading ? (
+										<p className=' animate-pulse text-gray-900 text-[17px] font-bold'>
+											0000
+										</p>
+									) : (
+										<p className='text-gray-900 text-[17px] font-bold'>
+											{parseFloat(
+												paymentHistory?.totalAmount
+											).toFixed(2)}
+										</p>
+									)}
 								</div>
 								<div className='flex items-center justify-between font-semibold'>
 									<p className='text-gray-500'>
 										Transation Id
 									</p>
-									<p className='text-gray-900'>{tran_id}</p>
+									{paymentInfoLoading ? (
+										<p className=' animate-pulse text-gray-900 '>
+											tranxId
+										</p>
+									) : (
+										<p className='text-gray-900'>
+											{tran_id}
+										</p>
+									)}
+								</div>
+								<div className='flex items-center justify-between font-semibold'>
+									<p className='text-gray-500'>Invoice No</p>
+									{paymentInfoLoading ? (
+										<p className=' animate-pulse text-red-500'>
+											Invoice Id
+										</p>
+									) : (
+										<p className='text-red-500'>
+											{paymentHistory?.invoiceNumber}
+										</p>
+									)}
+								</div>
+								<div className='text-[14px] text-start mt-2 text-red-500 '>
+									<p>
+										NB:{" "}
+										<span>
+											"Memorize or save your phone and
+											invoice numbers
+										</span>
+									</p>
 								</div>
 							</div>
 						</div>

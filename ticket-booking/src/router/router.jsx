@@ -23,6 +23,8 @@ import Invoice from "../Pages/Invoice/Invoice";
 import PrivateRoute from "../Loyout/PrivateRoute/PrivateRoute";
 import AdminPrivateRoute from "../Loyout/PrivateRoute/AdminPrivateRoute";
 import BusOperatorPrivateRoute from "../Loyout/PrivateRoute/BusOperatorPrivateRoute";
+import FinancialReport from "../Dashboard/BusOwnerComponent/FinancialReport/FinancialReport";
+import InvoiceShow from "../Pages/InvoiceShow/InvoiceShow";
 const router = createBrowserRouter([
 	{
 		path: "/",
@@ -63,6 +65,10 @@ const router = createBrowserRouter([
 			{
 				path: "/payment-failed",
 				element: <PaymentFailed />,
+			},
+			{
+				path: "/invoice-page",
+				element: <InvoiceShow />,
 			},
 		],
 	},
@@ -109,6 +115,14 @@ const router = createBrowserRouter([
 					<AdminPrivateRoute>
 						<PendingBus />
 					</AdminPrivateRoute>
+				),
+			},
+			{
+				path: "/dashboard/financial-report",
+				element: (
+					<BusOperatorPrivateRoute>
+						<FinancialReport />
+					</BusOperatorPrivateRoute>
 				),
 			},
 		],

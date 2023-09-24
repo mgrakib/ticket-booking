@@ -28,9 +28,11 @@ const AddBusOnRoad = () => {
 
 	const [updateNewBus, {data:newBusAddRes, isLoading}] = useAddNewBusMutation();
 	
-	const { busOperatorName, businessReg, email } = useSelector(
-		state => state.userSlice
-	);
+	const {
+		busOperatorName,
+		businessReg,
+		email: busOperatorEmail,
+	} = useSelector(state => state.userSlice);
 
 	
 
@@ -42,10 +44,10 @@ const AddBusOnRoad = () => {
 		reset
 	} = useForm();
 	const onSubmit = data => {
-		const busInfo = { ...data, isAC, busOperatorName, businessReg };
+		const busInfo = { ...data, isAC, busOperatorName, businessReg, busOperatorEmail };
 		updateNewBus(busInfo).then(res => {
 
-			console.log(res)
+			
 			if (res && res.data.acknowledged) {
 				reset();
 				toast.success("Successfully Add Bus", {

@@ -13,24 +13,26 @@ import Processing from "../../../Components/Processing/Processing";
 import toast, { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 
-
 const AddBusSedule = () => {
-	const [journeyDate, setJourneyDate] = useState(null);
+	const [journeyDate, setJourneyDate] = useState("");
 	const [busOperatorName, setBusOperatorName] = useState(null);
-const { busStationName: stationsName =[] } = useSelector(
-	state => state?.busStationNameSlice
-);
+
+	// getvalue station
+	const { busStationName: stationsName = [] } = useSelector(
+		state => state?.busStationNameSlice
+	);
+
+	// bus operator
 	const { data: busOperator } = useGetBusOperatorsQuery();
-	const { data: busNumbersArray } = useGetBusNumbersQuery({
+	// busNumber
+	const { data: busNumbersArray, isLoading:busNumberIsLoading } = useGetBusNumbersQuery({
 		busOperatorName,
 		journeyDate,
 	});
+
+
 	const [setUpdateBus, { data: returnData, isLoading }] =
 		useUpdateBusOnSeduleMutation();
-
-	const handelValue = event => {
-		console.log(event);
-	};
 
 	const {
 		register,
@@ -39,13 +41,16 @@ const { busStationName: stationsName =[] } = useSelector(
 		watch,
 		reset,
 	} = useForm();
+	
 	const onSubmit = data => {
 		console.log(data);
 		setUpdateBus(data)
 			.then(res => {
 				if (res) {
 					toast.success("Successfully Addes");
+					
 					reset();
+					
 				}
 			})
 			.catch(err => toast.error(err.message));
@@ -55,9 +60,21 @@ const { busStationName: stationsName =[] } = useSelector(
 	const busOperatorNameWatch = watch("busOperatorName");
 
 	useEffect(() => {
-		setJourneyDate(journeyDateWatch);
-		setBusOperatorName(busOperatorNameWatch);
+		if (moment(journeyDateWatch).isBefore(moment(), "day")) {
+			// Reset the date to today's date if it's in the past
+			setJourneyDate(moment().format("YYYY-MM-DD"));
+			setBusOperatorName(busOperatorNameWatch);
+		} else {
+			setJourneyDate(journeyDateWatch);
+			setBusOperatorName(busOperatorNameWatch);
+		}
 	}, [journeyDateWatch, busOperatorNameWatch]);
+
+	const handelChangeDate = event => {
+		setJourneyDate(event.target.value);
+	};
+
+
 
 	return (
 		<div className=''>
@@ -83,7 +100,8 @@ const { busStationName: stationsName =[] } = useSelector(
 
 								<div className='border py-1 rounded w-full'>
 									<input
-										onChange={handelValue}
+										value={journeyDate}
+										onChange={handelChangeDate}
 										{...register("journeyDate", {
 											required: true,
 										})}

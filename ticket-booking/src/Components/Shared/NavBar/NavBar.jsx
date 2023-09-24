@@ -31,6 +31,10 @@ const NavBar = () => {
 			path: "/contact",
 			title: "Contact",
 		},
+		{
+			path: "/invoice-page",
+			title: "Invoice Download",
+		},
 	];
 
 	useEffect(() => {

@@ -31,13 +31,14 @@ const Register = () => {
 		const {
 			businessReg,
 			busOperatorName,
-
 			email,
 			firstName,
 			password,
-			phoneNumber,
+			busOperatorPhoneNumber,
+			busOperatorAddress,
 			secondName,
 		} = data;
+
 		const name = `${firstName} ${secondName}`; 
 		const role = params;
 		dispatch(
@@ -47,7 +48,8 @@ const Register = () => {
 				name,
 				businessReg,
 				busOperatorName,
-				phoneNumber,
+				busOperatorPhoneNumber,
+				busOperatorAddress,
 				role,
 			})
 		)
@@ -212,21 +214,48 @@ const Register = () => {
 										{/* Phone Number   */}
 										<div className='col-span-1 w-full '>
 											<TextField
-												{...register("phoneNumber", {
-													required: true,
-												})}
+												{...register(
+													"busOperatorPhoneNumber",
+													{
+														required: true,
+													}
+												)}
 												id='standard-basic'
 												label='Phone Number *'
 												variant='standard'
 												className='w-full'
 											/>
-											{errors.phoneNumber?.type ===
-												"required" && (
+											{errors.busOperatorPhoneNumber
+												?.type === "required" && (
 												<p
 													role='alert'
 													className='text-[11px] text-red-500'
 												>
 													Phone Number is required
+												</p>
+											)}
+										</div>
+										{/* Office Address   */}
+										<div className='col-span-2 w-full '>
+											<TextField
+												{...register(
+													"busOperatorAddress",
+													{
+														required: true,
+													}
+												)}
+												id='standard-basic'
+												label='Office Address *'
+												variant='standard'
+												className='w-full'
+											/>
+											{errors.busOperatorAddress?.type ===
+												"required" && (
+												<p
+													role='alert'
+													className='text-[11px] text-red-500'
+												>
+													Office Address is required
 												</p>
 											)}
 										</div>

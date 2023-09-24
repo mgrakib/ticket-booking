@@ -16,3 +16,13 @@
 .css-1c2i806-MuiFormLabel-root-MuiInputLabel-root.Mui-focused{
     color: #219051 !important;
 }
+
+
+.neumorphism-input-field{
+    box-shadow: inset 1px 1px 5px #bebebe,
+            inset -1px -1px 5px #ffffff;
+}
+.neumorphism-input-field:focus{
+    box-shadow: inset 1px 1px 5px #9ff3c5,
+            inset -1px -1px 5px #d3fbe4;
+}

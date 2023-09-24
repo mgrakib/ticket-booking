@@ -87,6 +87,11 @@ export const baseAPI = createApi({
 				url: `/get-bus-station`,
 			}),
 		}),
+		findTicket: builder.query({
+			query: ({ invoiceNumber, mobileNum }) => ({
+				url: `payment-history-by-invoice_mobile?invoiceNumber=${invoiceNumber}&mobileNum=${mobileNum}`,
+			}),
+		}),
 	}),
 });
 
@@ -104,4 +109,5 @@ export const {
 	usePostOrderPaymentMutation,
 	useGetPaymentReceptQuery,
 	useGetBusStationNameQuery,
+	useFindTicketQuery
 } = baseAPI;

@@ -51,6 +51,8 @@ const TicketProcessing = () => {
 	);
 
 	
+	
+	
 
 	const handelGenderChange = (gender, seat) => {
 		setTicketDetails(prevDetails =>
@@ -82,8 +84,8 @@ const TicketProcessing = () => {
 
 		const allInfo = {
 			passengerInfo: [...newArray],
-			email: data.email,
-			mobileNum: data.mobileNum,
+			passengerEmail: data.email,
+			passengerMobileNo: data.passengerMobileNo,
 			isSecure,
 			totalAmount,
 			startingPoint: targetBus?.startingPoint,
@@ -91,9 +93,12 @@ const TicketProcessing = () => {
 			journeyDate: targetBus?.journeyDate,
 			startingTime: targetBus?.startingTime,
 			busOperatorName: targetBus?.busOperatorName,
+			busOperatorAddress: targetBus?.busOperatorAddress,
+			busOperatorEmail: targetBus?.busOperatorEmail,
+			busOperatorPhoneNumber: targetBus?.busOperatorPhoneNumber,
 			isAC: targetBus?.isAC,
 			busNumber: targetBus?.busNumber,
-			paymentDate: moment(new Date()).format("YYYY-MM-DD")
+			paymentDate: moment(new Date()).format("YYYY-MM-DD"),
 		};
 
 		if (!isPolicyAccept) {
@@ -371,7 +376,7 @@ const TicketProcessing = () => {
 													<input
 														type='text'
 														{...register(
-															`mobileNum`
+															`passengerMobileNo`
 														)}
 														id='mobile'
 														className='py-1 px-2 outline-none w-full bg-transparent focus:shadow-[0_0_5px_#219051] duration-200'
