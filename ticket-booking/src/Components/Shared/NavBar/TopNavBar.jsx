@@ -21,9 +21,9 @@ const TopNavBar = () => {
 			className=' text-[13px] py-2'
 		>
 			<Container>
-				<div className='flex justify-between items-center'>
+				<div className='flex flex-col md:flex-row md:justify-between md:items-center'>
 					{/* contact  */}
-					<div className='flex items-center gap-5 text-gray-500'>
+					<div className='flex flex-col md:flex-row md:items-center  md:gap-5 text-gray-500 '>
 						<div className='flex items-center gap-2 '>
 							{" "}
 							<BsTelephone className='text-[#0E9E4D] ' /> +44
@@ -36,8 +36,8 @@ const TopNavBar = () => {
 					</div>
 
 					{/* sing up  sing in */}
-					<div className='flex items-center gap-5'>
-						<div className='flex items-center gap-5 border border-gray-200 px-2 py-1 relative'>
+					<div className=' md:flex flex-1 items-center gap-5  mt-5 md:mt-0'>
+						<div className='flex  flex-col md:flex-row md:items-center gap-2 md:gap-5 border border-gray-200 px-2 py-2 md:py-1 relative ml-auto'>
 							{/* sing in */}
 							<div
 								onClick={event => {
@@ -45,7 +45,7 @@ const TopNavBar = () => {
 									setIsSingInOpen(!isSingInOpen);
 									setIsSingUpOpen(false);
 								}}
-								className='flex items-center gap-1 cursor-pointer'
+								className='order-2 md:order-1 flex items-center gap-1 cursor-pointer '
 							>
 								<IoLogIn className='text-[#0E9E4D] text-xl ' />{" "}
 								<p>Sing In</p>
@@ -76,7 +76,7 @@ const TopNavBar = () => {
 									setIsSingInOpen(false);
 									setIsSingUpOpen(!isSingUpOpen);
 								}}
-								className='flex items-center gap-1 cursor-pointer'
+								className='order-1 md:order-2 flex items-center gap-1 cursor-pointer'
 							>
 								<FaUserPlus className='text-[#0E9E4D] text-xl ' />{" "}
 								<p>Sing Up</p>

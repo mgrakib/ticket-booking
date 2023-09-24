@@ -65,7 +65,7 @@ const DashboardSidBar = () => {
 		>
 			<div>
 				<div className='w-[20px] h-[20px] bg-gray-500'></div>
-				<div className='text-gray-200 '>
+				<div className='text-gray-200 max-w-[60%]'>
 					{role === "busOperator"
 						? "Bus Operator Dashboard"
 						: "Admin Dashboard"}

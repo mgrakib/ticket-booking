@@ -83,7 +83,7 @@ const Invoice = () => {
 
 							<div className='absolute left-[48px] top-8  leading-3 '>
 								<p className='text-xl font-bold text-white'>
-									COMPANY NAME
+									E-Ticket Booking
 								</p>
 								<p className='text-[13px] tracking-[0.9px] text-gray-300'>
 									Skip the Line, Buy Online.
