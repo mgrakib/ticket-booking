@@ -1,6 +1,11 @@
 /** @format */
 
 const express = require("express");
+const puppeteer = require("puppeteer");
+const fs = require("fs-extra");
+const hbs = require("handlebars");
+const path = require("path");
+const moment = require("moment");
 const cors = require("cors");
 const app = express();
 const SSLCommerzPayment = require("sslcommerz-lts");
@@ -50,7 +55,6 @@ async function run() {
 		const paymentCollection = client
 			.db("e-Ticket_booking")
 			.collection("payment");
-	
 
 		app.get("/on_going_bus", async (req, res) => {
 			const fromCity = req.query.fromCity;
@@ -163,7 +167,6 @@ async function run() {
 			const extraInfo = await allBusInfoCollections.findOne({
 				busNumber: busInfo?.busNumber,
 			});
-
 
 			const newBusSedule = {
 				...busInfo,
@@ -375,7 +378,6 @@ async function run() {
 						businessReg,
 					});
 
-				
 				res.send({ insertNewUser, inserTBusOperator });
 			}
 		});
@@ -536,7 +538,7 @@ async function run() {
 			const invoiceNumber = req.query.invoiceNumber;
 			const passengerMobileNo = req.query.passengerMobileNo;
 
-			console.log(invoiceNumber, passengerMobileNo)
+			console.log(invoiceNumber, passengerMobileNo);
 			const paymentHistory = await paymentCollection.findOne({
 				$and: [{ invoiceNumber }, { passengerMobileNo }],
 			});
@@ -544,13 +546,68 @@ async function run() {
 			console.log(paymentHistory);
 			res.send(paymentHistory);
 		});
-		
+
 		app.get("/get-bus-station", async (req, res) => {
 			const result = await busStationName
 				.find({ busStationName: true })
 				.toArray();
 			const stationName = result?.[0]?.districts;
 			res.send(stationName);
+		});
+
+
+		// generate pdf 
+
+		const compailer = async function (tamplateName, data) {
+			const fileName = path.join(
+				process.cwd(),
+				"templates",
+				`${tamplateName}.hbs`
+			);
+			const html = await fs.readFile(fileName, "utf-8");
+			return hbs.compile(html)(data);
+		};
+
+		hbs.registerHelper(
+			"dateFormatestartingTime",
+			function (value, formate) {
+				return moment(value, "HH:mm")
+					.subtract(30, "minutes")
+					.format(formate);
+			}
+		);
+		hbs.registerHelper("dateFormate", function (value, formate) {
+			return moment(value, "HH:mm").format(formate);
+		});
+
+
+		app.post("/generate-ticket-pdf", async (req, res) => {
+			const tran_id = req.query.tran_id;
+			const paymentInfo = await paymentCollection.findOne({
+				tran_id,
+			});
+			
+			const browser = await puppeteer.launch({
+				headless: true,
+			});
+			const page = await browser.newPage();
+			const content = await compailer("ticket", paymentInfo);
+			await page.setContent(content);
+			const pdfBuffer = await page.pdf({
+				format: "A4",
+				printBackground: true,
+			});
+
+			await browser.close();
+
+			res.setHeader(
+				"Content-Disposition",
+				"attachment; filename=ticket.pdf"
+			);
+			res.setHeader("Content-Type", "application/pdf");
+
+			// Send the PDF as the response
+			res.send(pdfBuffer);
 		});
 
 		// Send a ping to confirm a successful connection
