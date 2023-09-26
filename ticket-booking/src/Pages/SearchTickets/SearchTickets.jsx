@@ -69,7 +69,7 @@ const SearchTickets = () => {
 							<FiltersSection />
 						</div>
 
-						<div className='  md:w-[75%] '>
+						<div className='w-full  md:w-[75%] '>
 							<ShowAllTickets
 								targetedTickets={targetedTickets}
 								isTicketLoading={isTicketLoading}

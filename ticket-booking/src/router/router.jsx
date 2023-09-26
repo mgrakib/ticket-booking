@@ -18,7 +18,6 @@ import TicketProcessing from "../Pages/TicketProcessing/TicketProcessing";
 import PaymentSuccess from "../Pages/PaymentSuccess/PaymentSuccess";
 import PaymentFailed from "../Pages/PaymentFailed/PaymentFailed";
 
-import Invoice from "../Pages/Invoice/Invoice";
 
 import PrivateRoute from "../Loyout/PrivateRoute/PrivateRoute";
 import AdminPrivateRoute from "../Loyout/PrivateRoute/AdminPrivateRoute";
@@ -58,10 +57,7 @@ const router = createBrowserRouter([
 				path: "/payment-successfull/:tran_id",
 				element: <PaymentSuccess />,
 			},
-			{
-				path: "/invoice/:tran_id",
-				element: <Invoice />,
-			},
+			
 			{
 				path: "/payment-failed",
 				element: <PaymentFailed />,

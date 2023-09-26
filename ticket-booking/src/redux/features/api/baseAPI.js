@@ -89,7 +89,13 @@ export const baseAPI = createApi({
 		}),
 		findTicket: builder.query({
 			query: ({ invoiceNumber, passengerMobileNo }) => ({
-				url: `payment-history-by-invoice_mobile?invoiceNumber=${invoiceNumber}&passengerMobileNo=${passengerMobileNo}`,
+				url: `/payment-history-by-invoice_mobile?invoiceNumber=${invoiceNumber}&passengerMobileNo=${passengerMobileNo}`,
+			}),
+		}),
+		downloadTicket: builder.mutation({
+			query: tran_id => ({
+				url: `/generate-ticket-pdf?tran_id=${tran_id}`,
+				method: "POST",
 			}),
 		}),
 	}),
@@ -109,5 +115,6 @@ export const {
 	usePostOrderPaymentMutation,
 	useGetPaymentReceptQuery,
 	useGetBusStationNameQuery,
-	useFindTicketQuery
+	useFindTicketQuery,
+	useDownloadTicketMutation
 } = baseAPI;

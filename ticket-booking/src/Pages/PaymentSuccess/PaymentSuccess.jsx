@@ -1,20 +1,31 @@
-import { Button } from "@mui/material";
+import { Button, Tooltip, Zoom } from "@mui/material";
 import Container from "../../Components/Container/Container";
 import { Link, useParams } from "react-router-dom";
-import Invoice from "../Invoice/Invoice";
-import { useGetPaymentReceptQuery } from "../../redux/features/api/baseAPI";
 
 
+import logo from "../../../public/logo.png";
+import paid from "../../assets/paid.png";
+import { BsPrinter } from "react-icons/bs";
+import ReactDOMServer from 'react-dom/server';
+import { useDownloadTicketMutation, useGetPaymentReceptQuery} from "../../redux/features/api/baseAPI";
+import Processing from "../../Components/Processing/Processing";
 const PaymentSuccess = () => {
 	const { tran_id } = useParams();
 	const {data: paymentHistory, isLoading:paymentInfoLoading} = useGetPaymentReceptQuery(tran_id);
+	const [getPDF, { data: pdfData, isLoading:downloadPDFLoading }] =
+		useDownloadTicketMutation();
+
+	const handleGeneratePdf = () => {
+		getPDF(tran_id)
+		console.log("btn click");
+	}
 
 	
     return (
-		<div className='py-5 w-full '>
+		<div className='mt-20 mb-5 md:mt-5 py-5 w-full '>
 			<Container>
 				<div className=' h-[80vh] flex items-center justify-center'>
-					<div className='p-10 w-[50%] text-center shadow-[0_0_10px_#21905150] inline-block mx-auto rounded-md'>
+					<div className='p-5 px-2 md:p-10 w-[95%] md:w-[50%] text-center shadow-[0_0_10px_#21905150] inline-block mx-auto rounded-md'>
 						<div className='w-[40px] h-[40px] mx-auto'>
 							<img
 								src='https://i.ibb.co/5M4QmrW/success-tick.png'
@@ -25,8 +36,8 @@ const PaymentSuccess = () => {
 							Payment Successful
 						</p>
 
-						<div className='my-14'>
-							<div className='text-[14px] flex flex-col gap-1'>
+						<div className='my-8 md:my-14'>
+							<div className='text-[13px] md:text-[14px] flex flex-col gap-1'>
 								<div className='flex items-center justify-between font-semibold'>
 									<p className='text-gray-500'>
 										Payment type
@@ -97,12 +108,13 @@ const PaymentSuccess = () => {
 										</p>
 									)}
 								</div>
-								<div className='text-[13px] text-start mt-2 text-red-500 '>
+								<div className='text-[12px] md:text-[13px] text-start mt-2 text-red-500 '>
 									<p>
 										NB:{" "}
 										<span>
 											"Memorize or save your phone and
-											invoice numbers to download your Ticket after"
+											invoice numbers to download your
+											Ticket after"
 										</span>
 									</p>
 								</div>
@@ -111,21 +123,28 @@ const PaymentSuccess = () => {
 
 						<div className='flex items-center justify-center gap-2'>
 							<div>
-								<Link to={`/invoice/${tran_id}`}>
-									<Button className='text-white bg-[#219051]'>
-										PRINT
-									</Button>
-								</Link>
+								{/* <Link to={`/invoice/${tran_id}`}> */}
+								<Button
+									onClick={handleGeneratePdf}
+									className='text-white bg-[#219051]'
+								>
+									PRINT
+								</Button>
+								{/* </Link> */}
 							</div>
 							<div>
-								<Button className='text-white bg-[#219051]'>
-									CLOSE
-								</Button>
+								<Link to={'/'}>
+									<Button className='text-white bg-[#219051]'>
+										CLOSE
+									</Button>
+								</Link>
 							</div>
 						</div>
 					</div>
 				</div>
 			</Container>
+
+			{downloadPDFLoading && <Processing />}
 		</div>
 	);
 };

@@ -13,7 +13,7 @@ const ContactUs = () => {
 					<div className='flex flex-col md:flex-row items-center gap-5'>
 						{/* from  */}
 						<div className='w-full md:w-[40%] text-center'>
-							<div className='p-5'>
+							<div className='p-2 md:p-5'>
 								<h1 className='text-3xl font-bold'>
 									Contact Us
 								</h1>

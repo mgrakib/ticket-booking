@@ -133,9 +133,9 @@ const TicketProcessing = () => {
 						Please Select a Payment Method -
 					</p>
 					<div className='mt-2'>
-						<div className='flex items-center justify-between'>
+						<div className='flex items-center flex-wrap justify-between'>
 							{/* bkash  */}
-							<div className='py-5 px-5 bg-white w-[25%] flex items-center justify-center gap-1 shadow border  hover:border-[#E3106E] group cursor-pointer h-[65px]'>
+							<div className='py-5 px-5 bg-white w-[50%] md:w-[25%] flex items-center justify-center gap-1 shadow border  hover:border-[#E3106E] group cursor-pointer h-[65px]'>
 								<img
 									src={bkash}
 									alt=''
@@ -145,7 +145,7 @@ const TicketProcessing = () => {
 								</p>
 							</div>
 							{/* nogod  */}
-							<div className='py-5 px-5 bg-white w-[25%] flex items-center justify-center shadow  relative overflow-hidden h-[65px] border hover:border-[#FF6700] cursor-pointer'>
+							<div className='py-5 px-5 bg-white w-[50%] md:w-[25%] flex items-center justify-center shadow  relative overflow-hidden h-[65px] border hover:border-[#FF6700] cursor-pointer'>
 								<img
 									src={nogod}
 									alt=''
@@ -154,22 +154,22 @@ const TicketProcessing = () => {
 							</div>
 
 							{/* rocket  */}
-							<div className='py-5 px-5 bg-white w-[25%] flex items-center justify-center shadow border hover:border-[#8C3494] cursor-pointer group h-[65px]'>
+							<div className='py-5 px-5 bg-white w-[50%] md:w-[25%] flex items-center justify-center shadow border hover:border-[#8C3494] cursor-pointer group h-[65px]'>
 								<img
 									src={rocket}
 									alt=''
 								/>
-								<p className='group-hover:text-[#8C3494]'>
+								<p className='group-hover:text-[#8C3494] ml-1'>
 									rocket
 								</p>
 							</div>
-							<div className='py-5 px-5 bg-white w-[25%] flex items-center justify-center shadow h-[65px] border hover:border-[#D0BB86] cursor-pointer group'>
+							<div className='py-5 px-5 bg-white w-[50%] md:w-[25%] flex items-center justify-center shadow h-[65px] border hover:border-[#D0BB86] cursor-pointer group'>
 								<img
 									src={other}
 									alt=''
-									className='h-[50%]'
+									className='h-[25px] w-[25px]'
 								/>
-								<p className='group-hover:text-[#D0BB86]'>
+								<p className='group-hover:text-[#D0BB86] text-[13px]'>
 									Other MFS
 								</p>
 							</div>
@@ -202,7 +202,7 @@ const TicketProcessing = () => {
 
 		const cashOnDelivary = (
 			<>
-				<div className='flex items-center gap-8 justify-center px-10'>
+				<div className='flex items-center gap-4 md:gap-8 justify-center px-1 md:px-10'>
 					<div>
 						<TbInfoTriangleFilled className='text-3xl text-[#219051]' />
 					</div>
@@ -220,7 +220,7 @@ const TicketProcessing = () => {
 
 		const cardOrBanking = (
 			<>
-				<div className='mt-5 flex items-center gap-8  justify-center px-10'>
+				<div className='mt-5 flex items-center gap-2 md:gap-8  justify-center px-2 md:px-10'>
 					<div>
 						<FaCircleInfo className='text-3xl text-[#219051]' />
 					</div>
@@ -255,10 +255,10 @@ const TicketProcessing = () => {
 		<div className=' bg-[#ECECEC] py-5'>
 			<Container>
 				<form onSubmit={handleSubmit(onSubmit)}>
-					<div className=' flex flex-col gap-14'>
+					<div className=' flex flex-col  md:gap-14'>
 						{/* personal info  */}
-						<div className='flex items-start gap-10'>
-							<div className='w-[70%]'>
+						<div className='flex flex-col md:flex-row items-start md:gap-10'>
+							<div className='w-full md:w-[70%]'>
 								<div>
 									{/* passenger details */}
 									<div>
@@ -286,7 +286,7 @@ const TicketProcessing = () => {
 														Name
 													</label>
 
-													<div className='w-[250px] border border-gray-400 bg-gray-100 rounded mt-1'>
+													<div className='w-full md:w-[250px] border border-gray-400 bg-gray-100 rounded mt-1'>
 														<input
 															type='text'
 															{...register(
@@ -372,7 +372,7 @@ const TicketProcessing = () => {
 													Mobile
 												</label>
 
-												<div className='w-[250px] border border-gray-400 bg-gray-100 rounded mt-1'>
+												<div className='w-full md:w-[250px] border border-gray-400 bg-gray-100 rounded mt-1'>
 													<input
 														type='text'
 														{...register(
@@ -394,7 +394,7 @@ const TicketProcessing = () => {
 													Email
 												</label>
 
-												<div className='w-[250px] border border-gray-400 bg-gray-100 rounded mt-1'>
+												<div className='w-full md:w-[250px] border border-gray-400 bg-gray-100 rounded mt-1'>
 													<input
 														type='text'
 														{...register(`email`)}
@@ -409,7 +409,7 @@ const TicketProcessing = () => {
 								</div>
 							</div>
 
-							<div className='w-[30%] '>
+							<div className='w-full md:w-[30%] '>
 								<JourneyDetails
 									targetBus={targetBus}
 									selectedSeats={selectedSeats}
@@ -418,8 +418,8 @@ const TicketProcessing = () => {
 						</div>
 
 						{/* payment info  */}
-						<div className='flex items-start gap-10'>
-							<div className='w-[70%]'>
+						<div className='flex flex-col md:flex-row items-start gap-10'>
+							<div className='order-2 md:order-1 w-full md:w-[70%]'>
 								<div>
 									<div>
 										<PoligonalShape
@@ -533,12 +533,12 @@ const TicketProcessing = () => {
 									</div>
 
 									<div className='mt-5'>
-										<div className='flex items-center relative'>
+										<div className='flex flex-col md:flex-row items-center relative'>
 											<div
 												onClick={() =>
 													setActiveTab("mobile")
 												}
-												className={`border border-[#219051] border-b-0 px-4 py-2 cursor-pointer  duration-300 ${
+												className={`border border-[#219051] border-b-0 px-4 py-2 cursor-pointer  duration-300 w-full ${
 													activeTab === "mobile"
 														? "active-tab bg-[#ECECEC]"
 														: "bg-white"
@@ -552,7 +552,7 @@ const TicketProcessing = () => {
 												onClick={() =>
 													setActiveTab("card")
 												}
-												className={`border border-[#219051] border-b-0 px-4 py-2 cursor-pointer duration-300  ${
+												className={`border border-[#219051] border-b-0 px-4 py-2 cursor-pointer duration-300 w-full ${
 													activeTab === "card"
 														? "active-tab bg-[#ECECEC]"
 														: "bg-white"
@@ -564,7 +564,7 @@ const TicketProcessing = () => {
 												onClick={() =>
 													setActiveTab("cash")
 												}
-												className={`border border-[#219051] border-b-0 px-4 py-2 cursor-pointer duration-300  ${
+												className={`border border-[#219051] border-b-0 px-4 py-2 cursor-pointer duration-300 w-full ${
 													activeTab === "cash"
 														? "active-tab bg-[#ECECEC]"
 														: "bg-white"
@@ -573,7 +573,7 @@ const TicketProcessing = () => {
 												<p>Cash on Delivery</p>
 											</div>
 										</div>
-										<div className='p-5 border border-[#219051]'>
+										<div className='p-1 md:p-5 border border-[#219051]'>
 											{activeTab === "mobile"
 												? mobileBanking
 												: activeTab === "cash"
@@ -584,7 +584,7 @@ const TicketProcessing = () => {
 								</div>
 							</div>
 
-							<div className='w-[30%] '>
+							<div className='order-1 md:order-2 w-full md:w-[30%] '>
 								<FareDetails
 									ticketPrice={ticketPrice}
 									processingFee={processingFee}
