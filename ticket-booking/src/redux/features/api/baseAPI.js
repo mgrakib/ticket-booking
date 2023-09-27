@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseAPI = createApi({
 	reducerPath: "fetchTicket",
 	baseQuery: fetchBaseQuery({
-		baseUrl: "https://ticket-booking-server-mgrakib.vercel.app",
+		baseUrl: "http://localhost:5000",
 	}),
 	tagTypes: ["ongoingBus", "pendingBus"],
 

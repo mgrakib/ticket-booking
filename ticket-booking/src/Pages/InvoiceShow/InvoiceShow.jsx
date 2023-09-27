@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import Container from "../../Components/Container/Container";
 import Marquee from "react-fast-marquee";
 import { TbInfoTriangleFilled } from "react-icons/tb";
-import { useFindTicketQuery } from "../../redux/features/api/baseAPI";
+import { useDownloadTicketMutation, useFindTicketQuery } from "../../redux/features/api/baseAPI";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Processing from "../../Components/Processing/Processing";
@@ -29,7 +29,10 @@ const InvoiceShow = () => {
 
     }
 
+	const [generatePDF, { data: pdfDate, isLoading:pdfLoding }] =
+		useDownloadTicketMutation();
 	
+    
     const {
 		invoiceNumber,
 		busOperatorName,
