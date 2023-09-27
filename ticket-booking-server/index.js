@@ -13,7 +13,12 @@ require("dotenv").config();
 
 const port = process.env.PORT || 5000;
 
-app.use(cors());
+const corsOptions = {
+	origin: "http://localhost:5173", // Replace YOUR_FRONTEND_PORT with the actual port
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
@@ -43,6 +48,7 @@ async function run() {
 			.db("e-Ticket_booking")
 			.collection("busOperators");
 
+		// all bus info 
 		const allBusInfoCollections = client
 			.db("e-Ticket_booking")
 			.collection("allBusInfo");
@@ -416,8 +422,8 @@ async function run() {
 				total_amount: totalAmount,
 				currency: "BDT",
 				tran_id: tran_id, // use unique tran_id for each api call
-				success_url: `http://localhost:5000/payment/success/${tran_id}`,
-				fail_url: `http://localhost:5000/payment/failed/${tran_id}`,
+				success_url: `https://ticket-booking-server-mgrakib.vercel.app/payment/success/${tran_id}`,
+				fail_url: `https://ticket-booking-server-mgrakib.vercel.app/failed/${tran_id}`,
 				cancel_url: "http://localhost:3030/cancel",
 				ipn_url: "http://localhost:3030/ipn",
 				shipping_method: "Courier",
@@ -582,6 +588,7 @@ async function run() {
 
 
 		app.post("/generate-ticket-pdf", async (req, res) => {
+			
 			const tran_id = req.query.tran_id;
 			const paymentInfo = await paymentCollection.findOne({
 				tran_id,
@@ -622,7 +629,7 @@ async function run() {
 }
 run().catch(console.dir);
 
-app.get("/health", (req, res) => {
+app.get("/", (req, res) => {
 	res.send("e-Ticket-Booking Server running...");
 });
 
